@@ -83,29 +83,62 @@ char	*ft_move(char *str1, char *str2, int crd, int d)
 		}
     str = ft_strcpy(str, str1, d * d);
 	i = crd / d;
-	while(j < 16 && (crd % d + d * ((j / 4) + i)) < (d * d))
+	while(j < 16)
 	{
-		if (((crd / d) - i) != (j / 4) && str2[j] == 1 && j != 0)
+		if ((crd + (j % 4)) + d * (j / 4) > d * d && str2[j] == 1)
 			str[0] = 2;
-		else if  ((crd % d + d * (j / 4)) > d * d && str2[j] == 1)
+		if (((crd + (j % 4) + d * (j / 4)) / d) - i != (j /4) && str2[j] == 1)
 			str[0] = 2;
-		else if(((crd / d) - i) == (j / 4))
-            str[crd % d + d * ((j / 4) + i)] = str1[crd % d + d * ((j / 4) + i)] + str2[j];
-//		    str[crd % d + d * (j / 4)] = str1[crd % d + d * (j / 4)] + str2[j];
-//		    str[crd + d * (j / 4)] = str1[crd + d * (j / 4)] + str2[j];
-		if (str[0] == 2 || str[crd % d + d * ((j / 4) + i)] == 2)
-		    return (str);
-//		if (str1[crd + d * (i / d)] == '0' && str2[j] == '0')
-//            str[crd + d * (i / d)] = 0;
-//        if (str1[crd + d * (i / d)] == '1' || str2[j] == '1')
-//            str1[crd + d * (i / d)] = 2;
-//        if (str1[crd + d * (i / d)] == '1' && str2[j] == '1')
-//            str1[crd + d * (i / d)] = 3;
+		if (str2[j] == 1)
+			str[(crd + (j % 4)) + d * (j / 4)] = str1[(crd + (j % 4)) + d * (j / 4)] + str2[j];
+		if (str[(crd + (j % 4)) + d * (j / 4)] == 2 || str[0] == 2)
+			return (str);
 		j++;
-		crd++;
 	}
 	return (str);
 }
+
+// char	*ft_move(char *str1, char *str2, int crd, int d)
+// {
+// 	char *str;
+// 	int i;
+// 	int j;
+
+// 	i = 0;
+// 	j = 0;
+// 	str = ft_strnew(d * d);
+// 	if (str1 == NULL)
+// 		{
+// 			str = ft_strcpy(str, str2, d * d);
+// 			return (str);
+// 		}
+//     str = ft_strcpy(str, str1, d * d);
+// 	i = crd / d;
+// 	while(j < 16)
+// 	{
+// 		if ((crd % d + d * ((j / 4) + i) > d * d && str2[j] == 1))
+// 			str[0] = 2; 
+// 		if (((crd / d) - i) != (j / 4) && str2[j] == 1 && j != 0)
+// 			str[0] = 2;
+// 		else if  ((crd % d + d * (j / 4)) > d * d && str2[j] == 1)
+// 			str[0] = 2;
+// 		else if(((crd / d) - i) == (j / 4))
+//             str[crd % d + d * ((j / 4) + i)] = str1[crd % d + d * ((j / 4) + i)] + str2[j];
+// //		    str[crd % d + d * (j / 4)] = str1[crd % d + d * (j / 4)] + str2[j];
+// //		    str[crd + d * (j / 4)] = str1[crd + d * (j / 4)] + str2[j];
+// 		if (str[0] == 2 || str[crd % d + d * ((j / 4) + i)] == 2)
+// 		    return (str);
+// //		if (str1[crd + d * (i / d)] == '0' && str2[j] == '0')
+// //            str[crd + d * (i / d)] = 0;
+// //        if (str1[crd + d * (i / d)] == '1' || str2[j] == '1')
+// //            str1[crd + d * (i / d)] = 2;
+// //        if (str1[crd + d * (i / d)] == '1' && str2[j] == '1')
+// //            str1[crd + d * (i / d)] = 3;
+// 		j++;
+// 		crd++;
+// 	}
+// 	return (str);
+// }
 
 int		ft_fsmb(char *str)
 {
@@ -135,7 +168,7 @@ int		ft_coordinate(char *str1, char *str2, int d)
 	s = ft_fsmb(str2);
 	while(i != d * d)
 	{
-		if (str1[i] == 1)
+		if (tmp[i] == 1 || tmp[i] == 2)
 			i++;
 		else
 		{
@@ -204,7 +237,7 @@ void	ft_qprint(char *str, int d)
 	int n;
 
 	i = 0;
-	while(i <= d * d + d)
+	while(i < d * d + d)
 	{
 	    if (str[i] == 0)
 	        str[i] = '.';
@@ -217,6 +250,27 @@ void	ft_qprint(char *str, int d)
 	}
 }
 
+char	*ft_d3(char *str)
+{
+	int i;
+	int j;
+	char *tmp;
+
+	i = 0;
+	j = 0;
+	tmp = ft_strnew(9);
+	while (i < 9)
+	{
+		if ((j % 4) == 3 && j != 0)
+			j++;
+		tmp[i] = str[j];
+		j++;
+		i++;
+	}
+	if (str[3] == 1 || str[12] == 1)
+		tmp[0] = 2;
+	return (tmp);
+}
 
 char	*ft_brute1(char **str, int n, int d)
 {
@@ -225,18 +279,21 @@ char	*ft_brute1(char **str, int n, int d)
 	int crd;
 
 	first = 1;
+	crd = -1;
 	while (first != n + 1)
 	{
 		second = 1;
 		while(second != n + 1)
 		{
-			crd = -1;
+			if (str[second] != NULL)
+				crd = -1;
 			if (str[second] != NULL)
 				crd = ft_coordinate(str[0], str[second], d);
 			if (crd >= 0)
 			{
 				str[0] = ft_move(str[0], str[second], crd, d);
 				str[second] = NULL;
+				crd = -1;
 			}
 			second++;
 		}
@@ -262,7 +319,7 @@ char	*ft_brute(char **str, int n)
 	int second;
 	int crd;
 
-	d = 4;
+	d = 3;
 	first = 1;
 	while (first != n + 1)
 	{
@@ -270,11 +327,13 @@ char	*ft_brute(char **str, int n)
 		while(second != n + 1)
 		{
 			crd = -1;
-			if (first != second && (str[first] != NULL || str[second] != NULL))
+			if ((first != second && (str[first] != NULL || str[second] != NULL)) && (d == 3))
+				crd = ft_coordinate(ft_d3(str[first]),str[second], d);
+			else if (first != second && (str[first] != NULL || str[second] != NULL))
 				crd = ft_coordinate(str[first], str[second], d);
 			if (first != second && crd >= 0)
 			{
-				str[0] = ft_move(str[first], str[second], crd, d);
+				str[0] = ft_move(ft_d3(str[first]), str[second], crd, d);
 				str[first] = NULL;
 				str[second] = NULL;
 				str[0] = ft_brute1(str, n, d);
@@ -284,7 +343,7 @@ char	*ft_brute(char **str, int n)
 		}
 		first++;
 	}
-	str[0] = ft_brute1(str, n, d);
+	str[0] = ft_brute1(str, n, d + 1);
 	return (str[0]);
 }
 

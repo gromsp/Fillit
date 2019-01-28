@@ -67,7 +67,7 @@ char	*ft_strcpy(char *dest, char *str, int n)
     return (dest);
 }
 
-char	*ft_move(char *str1, char *str2, int crd, int d)
+int		ft_move(char *str1, char *str2, int crd, int d)
 {
 	char *str;
 	int i;
@@ -92,53 +92,48 @@ char	*ft_move(char *str1, char *str2, int crd, int d)
 		if (str2[j] == 1)
 			str[(crd + (j % 4)) + d * (j / 4)] = str1[(crd + (j % 4)) + d * (j / 4)] + str2[j];
 		if (str[(crd + (j % 4)) + d * (j / 4)] == 2 || str[0] == 2)
+			return (1);
+		j++;
+	}
+	return (0);
+}
+
+char	*ft_paste(char *str1, char *str2, int crd, int d)
+{
+	char *str;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	str = ft_strnew(d * d);
+	if (str1 == NULL)
+	{
+		str = ft_strcpy(str, str2, d * d);
+		while(j < 16)
+		{
+			if (str[j] == 1)
+				str[j] = str2[16];
+			j++;
+		}
+		return (str);
+	}
+	str = ft_strcpy(str, str1, d * d);
+	i = crd / d;
+	while(j < 16)
+	{
+		if ((crd + (j % 4)) + d * (j / 4) > d * d && str2[j] == 1)
+			str[0] = 2;
+		if (((crd + (j % 4) + d * (j / 4)) / d) - i != (j /4) && str2[j] == 1)
+			str[0] = 2;
+		if (str2[j] == 1)
+			str[(crd + (j % 4)) + d * (j / 4)] = str2[16];
+		if (str[(crd + (j % 4)) + d * (j / 4)] == 2 || str[0] == 2)
 			return (str);
 		j++;
 	}
 	return (str);
 }
-
-// char	*ft_move(char *str1, char *str2, int crd, int d)
-// {
-// 	char *str;
-// 	int i;
-// 	int j;
-
-// 	i = 0;
-// 	j = 0;
-// 	str = ft_strnew(d * d);
-// 	if (str1 == NULL)
-// 		{
-// 			str = ft_strcpy(str, str2, d * d);
-// 			return (str);
-// 		}
-//     str = ft_strcpy(str, str1, d * d);
-// 	i = crd / d;
-// 	while(j < 16)
-// 	{
-// 		if ((crd % d + d * ((j / 4) + i) > d * d && str2[j] == 1))
-// 			str[0] = 2; 
-// 		if (((crd / d) - i) != (j / 4) && str2[j] == 1 && j != 0)
-// 			str[0] = 2;
-// 		else if  ((crd % d + d * (j / 4)) > d * d && str2[j] == 1)
-// 			str[0] = 2;
-// 		else if(((crd / d) - i) == (j / 4))
-//             str[crd % d + d * ((j / 4) + i)] = str1[crd % d + d * ((j / 4) + i)] + str2[j];
-// //		    str[crd % d + d * (j / 4)] = str1[crd % d + d * (j / 4)] + str2[j];
-// //		    str[crd + d * (j / 4)] = str1[crd + d * (j / 4)] + str2[j];
-// 		if (str[0] == 2 || str[crd % d + d * ((j / 4) + i)] == 2)
-// 		    return (str);
-// //		if (str1[crd + d * (i / d)] == '0' && str2[j] == '0')
-// //            str[crd + d * (i / d)] = 0;
-// //        if (str1[crd + d * (i / d)] == '1' || str2[j] == '1')
-// //            str1[crd + d * (i / d)] = 2;
-// //        if (str1[crd + d * (i / d)] == '1' && str2[j] == '1')
-// //            str1[crd + d * (i / d)] = 3;
-// 		j++;
-// 		crd++;
-// 	}
-// 	return (str);
-// }
 
 int		ft_fsmb(char *str)
 {
@@ -172,8 +167,8 @@ int		ft_coordinate(char *str1, char *str2, int d)
 			i++;
 		else
 		{
-			str1 = ft_move(tmp, str2, i - s, d);
-			flag = ft_search(str1, d);
+			flag = ft_move(tmp, str2, i - s, d);
+//			flag = ft_search(str1, d);
 			if (flag == 0)
 				return(i - s);
 			i++;
@@ -241,8 +236,8 @@ void	ft_qprint(char *str, int d)
 	{
 	    if (str[i] == 0)
 	        str[i] = '.';
-	    else if (str[i] == 1)
-	        str[i] = '#';
+//	    else if (str[i] == 1)
+//	        str[i] = '#';
 //	    else if (str[i] != 0 && str[i] != '\n')
 //	        str[i] = '1';
 		printf("%c", str[i]);
@@ -291,14 +286,14 @@ char	*ft_brute1(char **str, int n, int d)
 				crd = ft_coordinate(str[0], str[second], d);
 			if (crd >= 0)
 			{
-				str[0] = ft_move(str[0], str[second], crd, d);
+				str[0] = ft_paste(str[0], str[second], crd, d);
 				str[second] = NULL;
 				crd = -1;
 			}
 			second++;
 		}
 		first++;
-		if (first == n && crd < -3)
+		if (first >= n && crd < -3)
 		{
 			d++;
 			str[0] = ft_newquad(str[0], d - 1, d);
@@ -333,7 +328,7 @@ char	*ft_brute(char **str, int n)
 				crd = ft_coordinate(str[first], str[second], d);
 			if (first != second && crd >= 0)
 			{
-				str[0] = ft_move(ft_d3(str[first]), str[second], crd, d);
+				str[0] = ft_paste(ft_d3(str[first]), str[second], crd, d);
 				str[first] = NULL;
 				str[second] = NULL;
 				str[0] = ft_brute1(str, n, d);
@@ -343,6 +338,7 @@ char	*ft_brute(char **str, int n)
 		}
 		first++;
 	}
+	str[0] = NULL;
 	str[0] = ft_brute1(str, n, d + 1);
 	return (str[0]);
 }

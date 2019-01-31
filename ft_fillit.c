@@ -72,6 +72,7 @@ int		ft_move(char *str1, char *str2, int crd, int d)
 	char *str;
 	int i;
 	int j;
+	int g;
 
 	i = 0;
 	j = 0;
@@ -79,19 +80,21 @@ int		ft_move(char *str1, char *str2, int crd, int d)
 	if (str1 == NULL)
 		{
 			str = ft_strcpy(str, str2, d * d);
-			return (str);
+			return (1);
 		}
     str = ft_strcpy(str, str1, d * d);
 	i = crd / d;
 	while(j < 16)
 	{
+		g = (j - (4 * j));
+	//	printf (" %d j=%d\n", (j % 4), j);
 		if ((crd + (j % 4)) + d * (j / 4) > d * d && str2[j] == 1)
 			str[0] = 2;
 		if (((crd + (j % 4) + d * (j / 4)) / d) - i != (j /4) && str2[j] == 1)
 			str[0] = 2;
 		if (str2[j] == 1)
-			str[(crd + (j % 4)) + d * (j / 4)] = str1[(crd + (j % 4)) + d * (j / 4)] + str2[j];
-		if (str[(crd + (j % 4)) + d * (j / 4)] == 2 || str[0] == 2)
+			str[(crd + (j % 4)) + d * (j / 4)] = str1[(crd + j % 4) + d * (j / 4)] + str2[j];
+		if (((str[(crd + (j % 4)) + d * (j / 4)] >= 2) && (str2[j] == 1)) || (str[0] == 2))
 			return (1);
 		j++;
 	}
@@ -120,6 +123,39 @@ char	*ft_paste(char *str1, char *str2, int crd, int d)
 	}
 	str = ft_strcpy(str, str1, d * d);
 	i = crd / d;
+	while(j < 16)
+	{
+		if ((crd + (j % 4)) + d * (j / 4) > d * d && str2[j] == 1)
+			str[0] = 2;
+		if (((crd + (j % 4) + d * (j / 4)) / d) - i != (j /4) && str2[j] == 1)
+			str[0] = 2;
+		if (str2[j] == 1)
+			str[(crd + (j % 4)) + d * (j / 4)] = str2[16];
+		if (str[(crd + (j % 4)) + d * (j / 4)] == 2 || str[0] == 2)
+			return (str);
+		j++;
+	}
+	return (str);
+}
+
+char	*ft_paste3(char *str1, char *str2, int crd, int d)
+{
+	char *str;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	str = ft_strnew(d * d);
+	str = ft_strcpy(str, str1, d * d);
+	while(j < 16)
+	{
+		if (str[j] == 1)
+			str[j] = str1[9];
+		j++;
+	}
+	i = crd / d;
+	j = 0;
 	while(j < 16)
 	{
 		if ((crd + (j % 4)) + d * (j / 4) > d * d && str2[j] == 1)
@@ -188,7 +224,7 @@ char	*ft_newquad(char *str, int d, int nd)
 	strn = (char *)malloc(nd * nd);
 	while(i < nd * nd)
 	{
-		if (((i + 1) % nd == 0 && i != 0) || (j > d * d))
+		if (((i + 1) % nd == 0 && i != 0) || (j + 1 > (d * d)))
 			strn[i] = 0;
 		else
 		{
@@ -253,7 +289,7 @@ char	*ft_d3(char *str)
 
 	i = 0;
 	j = 0;
-	tmp = ft_strnew(9);
+	tmp = ft_strnew(10);
 	while (i < 9)
 	{
 		if ((j % 4) == 3 && j != 0)
@@ -264,6 +300,7 @@ char	*ft_d3(char *str)
 	}
 	if (str[3] == 1 || str[12] == 1)
 		tmp[0] = 2;
+	tmp[9] = str[16];
 	return (tmp);
 }
 
@@ -328,7 +365,7 @@ char	*ft_brute(char **str, int n)
 				crd = ft_coordinate(str[first], str[second], d);
 			if (first != second && crd >= 0)
 			{
-				str[0] = ft_paste(ft_d3(str[first]), str[second], crd, d);
+				str[0] = ft_paste3(ft_d3(str[first]), str[second], crd, d);
 				str[first] = NULL;
 				str[second] = NULL;
 				str[0] = ft_brute1(str, n, d);

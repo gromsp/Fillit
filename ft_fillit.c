@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 int		ft_search(char *str, int d)
 {
@@ -351,8 +352,11 @@ char	*ft_brute(char **str, int n)
 	int second;
 	int crd;
 
-	d = 3;
+	//d = 3;
+	d = floor(sqrt(n * 4));
 	first = 1;
+	if (d < 4)
+	{
 	while (first != n + 1)
 	{
 		second = 1;
@@ -375,8 +379,9 @@ char	*ft_brute(char **str, int n)
 		}
 		first++;
 	}
+	}
 	str[0] = NULL;
-	str[0] = ft_brute1(str, n, d + 1);
+	str[0] = ft_brute1(str, n, d);
 	return (str[0]);
 }
 

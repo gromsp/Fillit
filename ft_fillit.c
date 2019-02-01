@@ -113,12 +113,18 @@ char	*ft_paste(char *str1, char *str2, int crd, int d)
 	str = ft_strnew(d * d);
 	if (str1 == NULL)
 	{
-		str = ft_strcpy(str, str2, d * d);
-		while(j < 16)
+	//	str = ft_strcpy(str, str2, d * d);
+		while(i < d * d)
 		{
-			if (str[j] == 1)
-				str[j] = str2[16];
-			j++;
+			if ((i % d) == (j % 4) && j < 16)
+			{
+				if (str2[j] == 1)
+					str[i] = str2[16];
+				else
+					str[i] = str2[j];
+				j++;
+			}
+			i++;
 		}
 		return (str);
 	}
@@ -355,9 +361,7 @@ char	*ft_brute(char **str, int n)
 	//d = 3;
 	d = floor(sqrt(n * 4));
 	first = 1;
-	if (d < 4)
-	{
-	while (first != n + 1)
+	while (first != n + 1 && d == 3)
 	{
 		second = 1;
 		while(second != n + 1)
@@ -378,7 +382,6 @@ char	*ft_brute(char **str, int n)
 			second++;
 		}
 		first++;
-	}
 	}
 	str[0] = NULL;
 	str[0] = ft_brute1(str, n, d);

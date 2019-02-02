@@ -316,22 +316,31 @@ char	*ft_brute1(char **str, int n, int d)
 	int first;
 	int second;
 	int crd;
+	int ccrd[2];
 
 	first = 1;
 	crd = -1;
 	while (first != n + 1)
 	{
 		second = 1;
+		ccrd[0] = -1;
 		while(second != n + 1)
 		{
 			if (str[second] != NULL)
 				crd = -1;
 			if (str[second] != NULL)
 				crd = ft_coordinate(str[0], str[second], d);
-			if (crd >= 0)
+				printf("c%d\n", crd);
+			if (crd >= 0 && (crd < ccrd[0] || ccrd[0] < 0))
 			{
-				str[0] = ft_paste(str[0], str[second], crd, d);
-				str[second] = NULL;
+				ccrd[0] = crd;
+				ccrd[1] = second;
+			}
+			if (ccrd[0] >= 0 && second == n)
+			{
+				printf("%d\n", ccrd[0]);
+				str[0] = ft_paste(str[0], str[ccrd[1]], ccrd[0], d);
+				str[ccrd[1]] = NULL;
 				crd = -1;
 			}
 			second++;
@@ -358,7 +367,7 @@ char	*ft_brute(char **str, int n)
 	int second;
 	int crd;
 
-	//d = 3;
+	//d = 6;
 	d = floor(sqrt(n * 4));
 	first = 1;
 	while (first != n + 1 && d == 3)

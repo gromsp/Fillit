@@ -316,79 +316,91 @@ char	*ft_d3(char *str)
 	tmp[9] = str[16];
 	return (tmp);
 }
-
-int		ft_recurs(char **str, int s, int d, int n, int crd, int count)
+int g_size;
+int		ft_flag(int ovl[g_size])
 {
-	int f;
-	int c;
-	int flag;
-	char **tmp;
-	int ccrd[2];
+	int i;
 
-	f = 1;
-	c = n;
-	
-    tmp = (char **)malloc(sizeof(char *) * n + 1);
-	tmp[0] = (char *)malloc(d * d);
-	tmp[0] = ft_strcpy(tmp[0], str[0], d * d);
-    while (f <= n) 
+	i = g_size;
+	while (i--)
 	{
-		if (str[f] != NULL)
-		{
-        	tmp[f] = ft_strnew(17);
-			tmp[f] = ft_strcpy(tmp[f], str[f], 17);
-		}
-		else
-		{
-			tmp[f] = NULL;
-		}
-		f++;
-    }
-	tmp[0] = ft_paste(tmp[0], tmp[s], crd, d);
-	tmp[s] = NULL;
-	f = 1;
-	while (f < count)
-	{
-		flag = 0;
-		s = 1;
-		crd = -1;
-		ccrd[0] = -1;
-		while(s <= n)
-		{
-			if (tmp[s] == NULL)
-				s++;
-			else
-			{
-				crd = ft_coordinate(tmp[0], tmp[s], d);
-				if (crd >= 0 && (crd < ccrd[0] || ccrd[0] < 0))
-				{
-					ccrd[0] = crd;
-					ccrd[1] = s;
-				}
-				else if (ccrd[0] > 0 && ccrd[0] == crd)
-				{
-					flag = ft_recurs(tmp, ccrd[1], d, n, crd, count - 1);
-					if (flag == 1)
-						ccrd[1] = s;
-				}
-				s++;				
-			}
-		}
-		if (ccrd[0] >= 0)
-		{
-			tmp[0] = ft_paste(tmp[0], tmp[ccrd[1]], ccrd[0], d);
-			tmp[ccrd[1]] = NULL;
-			crd = -1;
-			count--;
-		}
-		else
-		{
-			f++;
-		}
-		
+		if (ovl[i] != 0)
+			return(i);
 	}
 	return (0);
 }
+// int		ft_recurs(char **str, int s, int d, int n, int crd, int count)
+// {
+// 	int f;
+// 	int c;
+// 	int flag;
+// 	char **tmp;
+// 	int ccrd[2];
+
+// 	f = 1;
+// 	c = n;
+	
+//     tmp = (char **)malloc(sizeof(char *) * n + 1);
+// 	tmp[0] = (char *)malloc(d * d);
+// 	tmp[0] = ft_strcpy(tmp[0], str[0], d * d);
+//     while (f <= n) 
+// 	{
+// 		if (str[f] != NULL)
+// 		{
+//         	tmp[f] = ft_strnew(17);
+// 			tmp[f] = ft_strcpy(tmp[f], str[f], 17);
+// 		}
+// 		else
+// 		{
+// 			tmp[f] = NULL;
+// 		}
+// 		f++;
+//     }
+// 	tmp[0] = ft_paste(tmp[0], tmp[s], crd, d);
+// 	tmp[s] = NULL;
+// 	f = 1;
+// 	while (f < count)
+// 	{
+// 		flag = 0;
+// 		s = 1;
+// 		crd = -1;
+// 		ccrd[0] = -1;
+// 		while(s <= n)
+// 		{
+// 			if (tmp[s] == NULL)
+// 				s++;
+// 			else
+// 			{
+// 				crd = ft_coordinate(tmp[0], tmp[s], d);
+// 				if (crd >= 0 && (crd < ccrd[0] || ccrd[0] < 0))
+// 				{
+// 					ccrd[0] = crd;
+// 					ccrd[1] = s;
+// 				}
+// 				else if (ccrd[0] > 0 && ccrd[0] == crd)
+// 				{
+// 					flag = ft_recurs(tmp, ccrd[1], d, n, crd, count - 1);
+// 					if (flag == 1)
+// 						ccrd[1] = s;
+// 				}
+// 				s++;				
+// 			}
+// 		}
+// 		if (ccrd[0] >= 0)
+// 		{
+// 			tmp[0] = ft_paste(tmp[0], tmp[ccrd[1]], ccrd[0], d);
+// 			tmp[ccrd[1]] = NULL;
+// 			crd = -1;
+// 			count--;
+// 		}
+// 		else
+// 		{
+// 			f++;
+// 		}
+		
+// 	}
+// 	return (0);
+// }
 // 	while (f <= n / 2)
 // 	{
 // 		s = 1;
@@ -460,7 +472,7 @@ int		ft_recurs(char **str, int s, int d, int n, int crd, int count)
 // 	}
 // }
 
-char	*ft_brute1(char **str, int n, int d)
+char	*ft_brute1(char **str, const int n, int d)
 {
 	int first;
 	int second;
@@ -468,49 +480,78 @@ char	*ft_brute1(char **str, int n, int d)
 	int ccrd[2];
 	int flag;
 	int count;
+	int mass[n + 1];
+	int ovl[d * d];
+	int fld[n + 1];
 
+	count = 0;
+	ft_bzero(ovl, d * d);
+	ft_bzero(fld, n + 1);
+	while (count <= n)
+	{
+		mass[count] = 1;
+		count++;
+	}
 	first = 1;
 	crd = -1;
-	count = n;
+	flag = -1;
 	while (first != n + 1)
 	{
 		second = 1;
 		ccrd[0] = -1;
-		flag = 0;
 		while(second != (n + 1))
 		{
-			if (str[second] != NULL)
+			if (mass[second] != 0)
 				crd = -1;
-			if (str[second] != NULL)
+			if (mass[second] != 0)
 				crd = ft_coordinate(str[0], str[second], d);
-			if (crd >= 0 && crd == ccrd[0] && str[0] != NULL)
-			{
-				flag = ft_recurs(str, ccrd[1], d, n, crd, count);
-				if (flag == 0)
-					ccrd[1] = second;
-			}
 			if (crd >= 0 && (crd < ccrd[0] || ccrd[0] < 0))
 			{
 				ccrd[0] = crd;
 				ccrd[1] = second;
 			}
+			else if (crd >= 0 && crd == ccrd[0] && mass[second] != 0)
+			{
+				if (flag != crd)
+					ovl[crd]++;
+				else
+				{
+					ccrd[1] = second;
+					ovl[crd]--;
+				//	flag = -1;
+				}				
+			}
 			if (ccrd[0] >= 0 && second == n)
 			{
 				str[0] = ft_paste(str[0], str[ccrd[1]], ccrd[0], d);
-				str[ccrd[1]] = NULL;
+				fld[ccrd[1]] = ccrd[0];
+				mass[ccrd[1]] = 0;
 				crd = -1;
-				count--;
 			}
 			second++;
 		}
 		first++;
 		if (first >= n && crd < -3)
 		{
-			d++;
-			str[0] = ft_newquad(str[0], d - 1, d);
+			str[0] = ft_strnew(d * d);
+			g_size = d * d;
+			flag = ft_flag(ovl);
+			count = 0;
+			while (count <= n)
+			{
+				mass[count] = 1;
+				count++;
+			}
 			first = 1;
-			crd = -1; 
+			crd = -1;
 		}
+		// if (first >= n && crd < -3)
+		// {
+		// 	d++;
+		// 	str[0] = ft_newquad(str[0], d, d);
+		// 	first = 1;
+		// 	crd = -1; 
+		// }
 	}
 	str[0] = ft_quadforprin(str[0], d);
 	ft_qprint(str[0], d);
@@ -525,8 +566,8 @@ char	*ft_brute(char **str, int n)
 	int second;
 	int crd;
 
-	//d = 6;
-	d = floor(sqrt(n * 4)) + 1;
+	d = 6;
+	// d = floor(sqrt(n * 4)) + 1;
 	first = 1;
 	while (first != n + 1 && d == 3)
 	{

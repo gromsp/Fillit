@@ -483,6 +483,7 @@ char	*ft_brute1(char **str, const int n, int d)
 	int mass[n + 1];
 	int ovl[d * d];
 	int fld[n + 1];
+	int gg;
 
 	count = 0;
 	ft_bzero(ovl, d * d);
@@ -495,6 +496,7 @@ char	*ft_brute1(char **str, const int n, int d)
 	first = 1;
 	crd = -1;
 	flag = -1;
+	gg = 0;
 	while (first != n + 1)
 	{
 		second = 1;
@@ -514,11 +516,11 @@ char	*ft_brute1(char **str, const int n, int d)
 			{
 				if (flag != crd)
 					ovl[crd]++;
-				else
+				else if (flag != -1)
 				{
 					ccrd[1] = second;
 					ovl[crd]--;
-				//	flag = -1;
+					flag = -1;
 				}				
 			}
 			if (ccrd[0] >= 0 && second == n)
@@ -531,11 +533,13 @@ char	*ft_brute1(char **str, const int n, int d)
 			second++;
 		}
 		first++;
+		gg++;
 		if (first >= n && crd < -3)
 		{
 			str[0] = ft_strnew(d * d);
 			g_size = d * d;
 			flag = ft_flag(ovl);
+			ft_bzero(ovl,d * d);
 			count = 0;
 			while (count <= n)
 			{
@@ -544,13 +548,21 @@ char	*ft_brute1(char **str, const int n, int d)
 			}
 			first = 1;
 			crd = -1;
+			if (gg > 100000)
+			{
+		 		d++;
+		 		str[0] = ft_strnew(d * d);
+				ft_bzero(ovl,d * d);
+		 		first = 1;
+		 		crd = -1; 
+			}
 		}
-		// if (first >= n && crd < -3)
+		// if (gg > 100)
 		// {
-		// 	d++;
-		// 	str[0] = ft_newquad(str[0], d, d);
-		// 	first = 1;
-		// 	crd = -1; 
+		//  	d++;
+		//  	str[0] = ft_newquad(str[0], d - 1, d);
+		//  	first = 1;
+		//  	crd = -1; 
 		// }
 	}
 	str[0] = ft_quadforprin(str[0], d);
@@ -566,7 +578,7 @@ char	*ft_brute(char **str, int n)
 	int second;
 	int crd;
 
-	d = 6;
+	d = 4;
 	// d = floor(sqrt(n * 4)) + 1;
 	first = 1;
 	while (first != n + 1 && d == 3)

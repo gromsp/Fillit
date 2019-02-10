@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "fillit.h"
 
 int		ft_search(char *str, int d)
 {
@@ -15,6 +16,14 @@ int		ft_search(char *str, int d)
 		i++;
 	}
 	return (0);
+}
+
+void	ft_bzeroint(void *s, size_t n)
+{
+    while (n-- > 0)
+    {
+        ((int*)s)[n] = (int)0;
+    }
 }
 
 void	ft_bzero(void *s, size_t n)
@@ -316,7 +325,9 @@ char	*ft_d3(char *str)
 	tmp[9] = str[16];
 	return (tmp);
 }
+
 int g_size;
+
 int		ft_flag(int ovl[g_size])
 {
 	int i;
@@ -329,246 +340,176 @@ int		ft_flag(int ovl[g_size])
 	}
 	return (0);
 }
-// int		ft_recurs(char **str, int s, int d, int n, int crd, int count)
-// {
-// 	int f;
-// 	int c;
-// 	int flag;
-// 	char **tmp;
-// 	int ccrd[2];
 
-// 	f = 1;
-// 	c = n;
-	
-//     tmp = (char **)malloc(sizeof(char *) * n + 1);
-// 	tmp[0] = (char *)malloc(d * d);
-// 	tmp[0] = ft_strcpy(tmp[0], str[0], d * d);
-//     while (f <= n) 
-// 	{
-// 		if (str[f] != NULL)
-// 		{
-//         	tmp[f] = ft_strnew(17);
-// 			tmp[f] = ft_strcpy(tmp[f], str[f], 17);
-// 		}
-// 		else
-// 		{
-// 			tmp[f] = NULL;
-// 		}
-// 		f++;
-//     }
-// 	tmp[0] = ft_paste(tmp[0], tmp[s], crd, d);
-// 	tmp[s] = NULL;
-// 	f = 1;
-// 	while (f < count)
-// 	{
-// 		flag = 0;
-// 		s = 1;
-// 		crd = -1;
-// 		ccrd[0] = -1;
-// 		while(s <= n)
-// 		{
-// 			if (tmp[s] == NULL)
-// 				s++;
-// 			else
-// 			{
-// 				crd = ft_coordinate(tmp[0], tmp[s], d);
-// 				if (crd >= 0 && (crd < ccrd[0] || ccrd[0] < 0))
-// 				{
-// 					ccrd[0] = crd;
-// 					ccrd[1] = s;
-// 				}
-// 				else if (ccrd[0] > 0 && ccrd[0] == crd)
-// 				{
-// 					flag = ft_recurs(tmp, ccrd[1], d, n, crd, count - 1);
-// 					if (flag == 1)
-// 						ccrd[1] = s;
-// 				}
-// 				s++;				
-// 			}
-// 		}
-// 		if (ccrd[0] >= 0)
-// 		{
-// 			tmp[0] = ft_paste(tmp[0], tmp[ccrd[1]], ccrd[0], d);
-// 			tmp[ccrd[1]] = NULL;
-// 			crd = -1;
-// 			count--;
-// 		}
-// 		else
-// 		{
-// 			f++;
-// 		}
-		
-// 	}
-// 	return (0);
-// }
-// 	while (f <= n / 2)
-// 	{
-// 		s = 1;
-// 		crd = -1;
-// 		ccrd[0] = -1;
-// 		flag = 0;
-// 		while(s <= n && c > 0)
-// 		{
-// 			crd = -1;
-// 			if (tmp[s] != NULL)
-// 				crd = ft_coordinate(tmp[0], tmp[s], d);
-// 			if (crd >= 0 && crd == ccrd[0] && flag == 0)
-// 			{
-// 				flag = ft_recurs(tmp, ccrd[1], d, n, crd, count);	
-// 				if (flag == 1)
-// 					ccrd[1] = s;	
-// 			}
-// 			if (crd >= 0 && (crd < ccrd[0] || ccrd[0] < 0))
-// 				{
-// 					ccrd[0] = crd;
-// 					ccrd[1] = s;
-// 				}
-// 			if (ccrd[0] >= 0 && s == n)
-// 				{
-// 					tmp[0] = ft_paste(tmp[0], tmp[ccrd[1]], ccrd[0], d);
-// 					tmp[ccrd[1]] = NULL;
-// 					crd = -1;
-// 					c--;
-// 				}
-// 			s++;
-// 		}
-// 		f++;
-// 		if (f >= n / 2 && crd < 0)
-// 			return(1);
-// 	}
-// 	return (0);
-// }
-
-
-// 	while (f <= n)
-// 	{
-// 		s = 1;
-// 		while(c > 0)
-// 		{
-// 			flag = 0;
-// 			if (str[s] != NULL)
-// 				crd = -1;
-// 			if (str[s] != NULL)
-// 				crd = ft_coordinate(str[0], str[s], d);
-// 			if (crd >= 0 && crd == ccrd[0])
-// 				flag = ft_recurs(str, s, d, n - 1, crd);			
-// 			if (crd >= 0 && (crd < ccrd[0] || ccrd[0] < 0) && flag == 0)
-// 				{
-// 					ccrd[0] = crd;
-// 					ccrd[1] = s;
-// 				}
-				
-// 			if (ccrd[0] >= 0 && s == n)
-// 				{
-// 					str[0] = ft_paste(str[0], str[ccrd[1]], ccrd[0], d);
-// 					str[ccrd[1]] = NULL;
-// 					crd = -1;
-// 					c--;
-// 				}
-// 			s++;
-// 		}
-
-// 		f++;
-// 	}
-// }
-
-char	*ft_brute1(char **str, const int n, int d)
+char	*ft_subs(char **str, struct t_tetro)
 {
-	int first;
 	int second;
 	int crd;
-	int ccrd[2];
-	int flag;
-	int count;
-	int mass[n + 1];
-	int ovl[d * d];
-	int fld[n + 1];
-	int gg;
 
-	count = 0;
-	ft_bzero(ovl, d * d);
-	ft_bzero(fld, n + 1);
-	while (count <= n)
+	second = 1;
+	t_tetro.ccrd[0] = -1;
+	while (second <= t_tetro.n)
 	{
-		mass[count] = 1;
-		count++;
+		crd = -1;
+		if (t_tetro.mass[second] != 0)
+			crd = ft_coordinate(str[0], str[second], t_tetro.d);
+		if (crd >= 0 && (crd < t_tetro.ccrd[0] || t_tetro.ccrd[0] < 0)
+		{
+			t_tetro.ccrd[0] = crd;
+			t_tetro.ccrd[1] = second;
+		}
 	}
-	first = 1;
-	crd = -1;
-	flag = -1;
-	gg = 0;
-	while (first != n + 1)
+	if (t_tetro.ccrd[0] >= 0)
 	{
-		second = 1;
-		ccrd[0] = -1;
-		while(second != (n + 1))
-		{
-			if (mass[second] != 0)
-				crd = -1;
-			if (mass[second] != 0)
-				crd = ft_coordinate(str[0], str[second], d);
-			if (crd >= 0 && (crd < ccrd[0] || ccrd[0] < 0))
-			{
-				ccrd[0] = crd;
-				ccrd[1] = second;
-			}
-			else if (crd >= 0 && crd == ccrd[0] && mass[second] != 0)
-			{
-				if (flag != crd)
-					ovl[crd]++;
-				else if (flag != -1)
-				{
-					ccrd[1] = second;
-					ovl[crd]--;
-					flag = -1;
-				}				
-			}
-			if (ccrd[0] >= 0 && second == n)
-			{
-				str[0] = ft_paste(str[0], str[ccrd[1]], ccrd[0], d);
-				fld[ccrd[1]] = ccrd[0];
-				mass[ccrd[1]] = 0;
-				crd = -1;
-			}
-			second++;
-		}
-		first++;
-		gg++;
-		if (first >= n && crd < -3)
-		{
-			str[0] = ft_strnew(d * d);
-			g_size = d * d;
-			flag = ft_flag(ovl);
-			ft_bzero(ovl,d * d);
-			count = 0;
-			while (count <= n)
-			{
-				mass[count] = 1;
-				count++;
-			}
-			first = 1;
-			crd = -1;
-			if (gg > 100000)
-			{
-		 		d++;
-		 		str[0] = ft_strnew(d * d);
-				ft_bzero(ovl,d * d);
-		 		first = 1;
-		 		crd = -1; 
-			}
-		}
-		// if (gg > 100)
-		// {
-		//  	d++;
-		//  	str[0] = ft_newquad(str[0], d - 1, d);
-		//  	first = 1;
-		//  	crd = -1; 
-		// }
+		str[0] = ft_paste(str[0], str[t_tetro.ccrd[1]], t_tetro.ccrd[0], t_tetro.d);
+		mass[t_tetro.ccrd[1]] = 0;
+		t_tetro.fld[ccrd[1]] = ccrd[0];
 	}
-	str[0] = ft_quadforprin(str[0], d);
-	ft_qprint(str[0], d);
 	return (str[0]);
 }
+
+char	*ft_brute2(char **str, struct t_tetro)
+{
+	int first;
+	int crd;
+
+	first = 1;
+	while (first <= t_tetro.n)
+	{
+		second = 1;
+		while (second <= t_tetro.n)
+		{
+			crd = -1;
+			if (t_tetro.mass[second] != 0)
+				crd = ft_coordinate(str[0], str[second], t_tetro.d);
+			
+		}
+	}
+
+}
+
+
+char	*ft_init(char **str, int count, int diag)
+{
+	struct t_tetro;
+	int c;
+
+	t_tetro.d = diag;
+	t_tetro.n = count;
+
+	t_tetro->mass = (int *)malloc((sizeof) * (count + 1));
+	t_tetro->ovl = (int *)malloc((sizeof) * diag * diag);
+	t_tetro->fld = (int *)malloc((sizeof) * (count + 1));
+	b_zeroint(t_tetro->ovl);
+	b_zeroint(t_tetro->fld);
+	c = 0;
+	while (c <= n)
+	{
+		mass[c] = 1;
+		c++;
+	}
+	str[0] = ft_brute2(str, t_tetro);
+
+}
+
+
+// char	*ft_brute1(char **str, const int n, int d)
+// {
+// 	int first;
+// 	int second;
+// 	int crd;
+// 	int ccrd[2];
+// 	int flag;
+// 	int count;
+// 	int mass[n + 1];
+// 	int ovl[d * d];
+// 	int fld[n + 1];
+// 	int gg;
+
+// 	count = 0;
+// 	ft_bzero(ovl, d * d);
+// 	ft_bzero(fld, n + 1);
+// 	while (count <= n)
+// 	{
+// 		mass[count] = 1;
+// 		count++;
+// 	}
+// 	first = 1;
+// 	crd = -1;
+// 	flag = -1;
+// 	gg = 0;
+// 	while (first != n + 1)
+// 	{
+// 		second = 1;
+// 		ccrd[0] = -1;
+// 		while(second != (n + 1))
+// 		{
+// 			if (mass[second] != 0)
+// 				crd = -1;
+// 			if (mass[second] != 0)
+// 				crd = ft_coordinate(str[0], str[second], d);
+// 			if (crd >= 0 && (crd < ccrd[0] || ccrd[0] < 0))
+// 			{
+// 				ccrd[0] = crd;
+// 				ccrd[1] = second;
+// 			}
+// 			else if (crd >= 0 && crd == ccrd[0] && mass[second] != 0)
+// 			{
+// 				if (flag != crd)
+// 					ovl[crd]++;
+// 				else if (flag != -1)
+// 				{
+// 					ccrd[1] = second;
+// 					ovl[crd]--;
+// 					flag = -1;
+// 				}				
+// 			}
+// 			if (ccrd[0] >= 0 && second == n)
+// 			{
+// 				str[0] = ft_paste(str[0], str[ccrd[1]], ccrd[0], d);
+// 				fld[ccrd[1]] = ccrd[0];
+// 				mass[ccrd[1]] = 0;
+// 				crd = -1;
+// 			}
+// 			second++;
+// 		}
+// 		first++;
+// 		gg++;
+// 		if (first >= n && crd < -3)
+// 		{
+// 			str[0] = ft_strnew(d * d);
+// 			g_size = d * d;
+// 			flag = ft_flag(ovl);
+// 			ft_bzero(ovl,d * d);
+// 			count = 0;
+// 			while (count <= n)
+// 			{
+// 				mass[count] = 1;
+// 				count++;
+// 			}
+// 			first = 1;
+// 			crd = -1;
+// 			if (gg > 100000)
+// 			{
+// 		 		d++;
+// 		 		str[0] = ft_strnew(d * d);
+// 				ft_bzero(ovl,d * d);
+// 		 		first = 1;
+// 		 		crd = -1; 
+// 			}
+// 		}
+// 		// if (gg > 100)
+// 		// {
+// 		//  	d++;
+// 		//  	str[0] = ft_newquad(str[0], d - 1, d);
+// 		//  	first = 1;
+// 		//  	crd = -1; 
+// 		// }
+// 	}
+// 	str[0] = ft_quadforprin(str[0], d);
+// 	ft_qprint(str[0], d);
+// 	return (str[0]);
+// }
 
 
 char	*ft_brute(char **str, int n)
@@ -609,81 +550,8 @@ char	*ft_brute(char **str, int n)
 }
 
 
-
-// char	*ft_brute(char **str, int n)
-// {
-// 	int d;
-// 	int first;
-// 	int second;
-// 	int crd;
-
-// 	d = 4;
-// 	first = 0;
-// 	while (first != n + 1)
-// 	{
-// 		second = 1;
-// 		while(second != n + 1)
-// 		{
-// 			crd = -1;
-// 			if (first != second && (str[first] != NULL || str[second] != NULL))
-// 				crd = ft_coordinate(str[first], str[second], d);
-// 			if (first != second && crd >= 0)
-// 			{
-// 				str[first] = ft_move(str[first], str[second], crd, d);
-// 				str[second] = NULL;
-// 			}
-// 			second++;
-// 		}
-// 		first++;
-// 		if (first == n && crd < 0)
-// 		{
-// 			d++;
-// 			str[0] = ft_newquad(str[0], d - 1, d);
-// 			first = 0;
-// 			crd = -1; 
-// 		}
-// 	}
-// 	str[0] = ft_quadforprin(str[0], d);
-// 	return (str[0]);
-// }
-
-// void	ft_qprint(char *str, int d)
-// {
-// 	int i;
-// 	int n;
-
-// 	i = 0;
-// 	while(i <= d * d + d)
-// 	{
-// 	    if (str[i] == 0)
-// 	        str[i] = '.';
-// 	    else if (str[i] == 1)
-// 	        str[i] = '#';
-// //	    else if (str[i] != 0 && str[i] != '\n')
-// //	        str[i] = '1';
-// 		printf("%c", str[i]);
-// 		i++;
-// 	}
-// }
-
 void	ft_fillit(char **str, int n)
 {
 	str[0] = ft_brute(str, n);
 	// ft_qprint(str[0]);	
 }
-
-//int		main()
-//{
-//	char	**str;
-//	int 	n;
-//
-//	printf("1");
-//	str[1] = "0000110001000100";
-//	str[2] = "0000111100000000";
-//	// str[3] = "1000111000000000";
-//	// str[4] = "0000110001100000";
-//	n = 2;
-//	printf("1");
-//	ft_fillit(str, n);
-//	return 0;
-//}

@@ -328,17 +328,58 @@ char	*ft_d3(char *str)
 
 int g_size;
 
-int		ft_flag(int ovl[g_size])
+int		ft_flag(int *ovl, int d)
 {
 	int i;
 
-	i = g_size;
+	i = d * d;
 	while (i--)
 	{
 		if (ovl[i] != 0)
 			return(i);
 	}
 	return (0);
+}
+
+int		ft_checkmass(int *mass, int n)
+{
+	int i;
+	int count;
+
+	i = 1;
+	count = 0;
+	while (i <= n)
+	{
+		if (mass[i] == 1)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+char	*ft_restore(char *str, struct t_tetro)
+{
+	int i;
+	int j;
+	int tet;
+	char c;
+
+	i = ft_flag(t_tetro.ovl, t_tetro.d);
+	str[i] = c;
+	j = 0;
+	while (j <= t_tetro.n)
+	{
+		if (t_tetro.fld[j] == i)
+			t_tetro.mass[j] = 1;
+		j++;
+	}
+	while (i < t_tetro.d * t_tetro.d)
+	{
+		if (str[i] == c)
+			str[i] = 0;
+		i++;
+	}
+	return (str);
 }
 
 char	*ft_subs(char **str, struct t_tetro)
@@ -353,16 +394,18 @@ char	*ft_subs(char **str, struct t_tetro)
 		crd = -1;
 		if (t_tetro.mass[second] != 0)
 			crd = ft_coordinate(str[0], str[second], t_tetro.d);
-		if (crd >= 0 && (crd < t_tetro.ccrd[0] || t_tetro.ccrd[0] < 0)
+		if (crd >= 0 && (crd < t_tetro.ccrd[0] || t_tetro.ccrd[0] < 0))
 		{
 			t_tetro.ccrd[0] = crd;
 			t_tetro.ccrd[1] = second;
 		}
+		else if (crd == t_tetro.ccrd[0] && crd > 0)
+			t_tetro.ovl[crd]++;
 	}
 	if (t_tetro.ccrd[0] >= 0)
 	{
 		str[0] = ft_paste(str[0], str[t_tetro.ccrd[1]], t_tetro.ccrd[0], t_tetro.d);
-		mass[t_tetro.ccrd[1]] = 0;
+		mass[t_tetro.ccrd[1] = 0;
 		t_tetro.fld[ccrd[1]] = ccrd[0];
 	}
 	return (str[0]);
@@ -372,20 +415,24 @@ char	*ft_brute2(char **str, struct t_tetro)
 {
 	int first;
 	int crd;
+	int cflg;
 
 	first = 1;
+	flg = 0;
 	while (first <= t_tetro.n)
 	{
-		second = 1;
-		while (second <= t_tetro.n)
+		str[0] = ft_subs(str, t_tetro);
+		first++;
+		if (first == t_tetro.n)
 		{
-			crd = -1;
-			if (t_tetro.mass[second] != 0)
-				crd = ft_coordinate(str[0], str[second], t_tetro.d);
-			
+			cflg = ft_checkmass(t_tetro.mass, t_tetro.n);
+			if (cflg > 0)
+			{
+				str[0] = ft_restore(str[0], t_tetro);
+				first = 1;
+			}
 		}
 	}
-
 }
 
 
@@ -409,7 +456,6 @@ char	*ft_init(char **str, int count, int diag)
 		c++;
 	}
 	str[0] = ft_brute2(str, t_tetro);
-
 }
 
 

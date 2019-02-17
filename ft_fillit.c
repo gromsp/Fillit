@@ -18,7 +18,7 @@ int		ft_search(char *str, int d)
 	return (0);
 }
 
-void	ft_bzeroint(void *s, size_t n)
+void	ft_bzeroint(int *s, size_t n)
 {
     while (n-- > 0)
     {
@@ -338,7 +338,7 @@ int		ft_flag(int *ovl, int d)
 		if (ovl[i] != 0)
 			return(i);
 	}
-	return (0);
+	return (-1);
 }
 
 int		ft_checkmass(int *mass, int n)
@@ -357,105 +357,190 @@ int		ft_checkmass(int *mass, int n)
 	return (count);
 }
 
-char	*ft_restore(char *str, struct t_tetro)
+char	*ft_restore(char **str, t_tetro *tetro, int i)
 {
-	int i;
 	int j;
 	int tet;
 	char c;
 
-	i = ft_flag(t_tetro.ovl, t_tetro.d);
-	str[i] = c;
+	c = str[i][16];
 	j = 0;
-	while (j <= t_tetro.n)
-	{
-		if (t_tetro.fld[j] == i)
-			t_tetro.mass[j] = 1;
+	tetro->mass[i] = 1;
+	tetro->fld[i] = 0;
+	while (j < tetro->d * tetro->d)
+	{ 
+		if (str[0][j] == c)
+			str[0][j] = 0;
 		j++;
 	}
-	while (i < t_tetro.d * t_tetro.d)
-	{
-		if (str[i] == c)
-			str[i] = 0;
-		i++;
-	}
-	return (str);
+	return (str[0]);
 }
 
-char	*ft_subs(char **str, struct t_tetro)
+char	*ft_subs(char **str, t_tetro *tetro)
 {
 	int second;
 	int crd;
 
 	second = 1;
-	t_tetro.ccrd[0] = -1;
-	while (second <= t_tetro.n)
+	tetro->ccrd[0] = -1;
+	while (second <= tetro->n)
 	{
 		crd = -1;
-		if (t_tetro.mass[second] != 0)
-			crd = ft_coordinate(str[0], str[second], t_tetro.d);
-		if (crd >= 0 && (crd < t_tetro.ccrd[0] || t_tetro.ccrd[0] < 0))
+		if (tetro->mass[second] != 0)
+			crd = ft_coordinate(str[0], str[second], tetro->d);
+		if (crd >= 0 && (crd < tetro->ccrd[0] || tetro->ccrd[0] < 0))
 		{
-			t_tetro.ccrd[0] = crd;
-			t_tetro.ccrd[1] = second;
+			tetro->ccrd[0] = crd;
+			tetro->ccrd[1] = second;
 		}
-		else if (crd == t_tetro.ccrd[0] && crd > 0)
-			t_tetro.ovl[crd]++;
+		else if (crd == tetro->ccrd[0] && crd >= 0)
+		{
+			tetro->ovl[crd]++;
+			tetro->rtr[crd][second]++;
+		}
+		second++;
 	}
-	if (t_tetro.ccrd[0] >= 0)
+	if (tetro->ccrd[0] >= 0)
 	{
-		str[0] = ft_paste(str[0], str[t_tetro.ccrd[1]], t_tetro.ccrd[0], t_tetro.d);
-		mass[t_tetro.ccrd[1] = 0;
-		t_tetro.fld[ccrd[1]] = ccrd[0];
+		str[0] = ft_paste(str[0], str[tetro->ccrd[1]], tetro->ccrd[0], tetro->d);
+		tetro->mass[tetro->ccrd[1]] = 0;
+		tetro->fld[tetro->ccrd[1]] = tetro->ccrd[0];
 	}
 	return (str[0]);
 }
 
-char	*ft_brute2(char **str, struct t_tetro)
+char	*ft_back(char **str, t_tetro *tetro)
+{
+	int i;
+	int j;
+
+	j = 1;
+	i = ft_flag(tetro->ovl, tetro->d);
+	while(i <= tetro->n)
+	{
+		if (tetro->fld[j] >= i)
+			str[0] = ft_restore(str, tetro, j);
+		i++;
+		if (tetro->ovl[i] <= tetro->d * tetro->d)
+			tetro->ovl[i] = 0;
+	}
+	return (str[0]);
+}
+
+char	*ft_fpaste(char **str, t_tetro *tetro)
+{
+	int i;
+	int j;
+
+	j = 1;
+	i = ft_flag(tetro->ovl, tetro->d);
+	while(j <= tetro->n)
+	{
+		if (tetro->rtr[i][j] == 1)
+		{
+			str[0] = ft_paste(str[0], str[j], i, tetro->d);
+			tetro->mass[j] = 0;
+			tetro->fld[j] = i;
+			tetro->rtr[i][j] = 0;
+			tetro->ovl[i]--;
+			return (str[0]);
+		}
+		j++;
+	}
+	return (str[0]);
+}
+
+int		ft_checkrtr(t_tetro *tetro)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (i <= tetro->d * tetro->d)
+	{
+		while (j <= tetro->n)
+		{
+			if (tetro->rtr[i][j] == 1)
+				return (-1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+char	*ft_brute2(char **str, t_tetro *tetro)
 {
 	int first;
 	int crd;
 	int cflg;
+	int flg;
 
 	first = 1;
 	flg = 0;
-	while (first <= t_tetro.n)
+	while (first <= tetro->n)
 	{
-		str[0] = ft_subs(str, t_tetro);
+		str[0] = ft_subs(str, tetro);
 		first++;
-		if (first == t_tetro.n)
+		if (first == tetro->n)
 		{
-			cflg = ft_checkmass(t_tetro.mass, t_tetro.n);
-			if (cflg > 0)
+			cflg = ft_checkmass(tetro->mass, tetro->n);
+			if (cflg > 0 && ft_checkrtr(tetro) < 0)
 			{
-				str[0] = ft_restore(str[0], t_tetro);
+				str[0] = ft_back(str, tetro);
+				first = 1;
+				str[0] = ft_fpaste(str, tetro);
+			}
+			else if (cflg <= 0)
+			{
+				str[0] = ft_quadforprin(str[0], tetro->d);
+				ft_qprint(str[0], tetro->d);
+				return (str[0]);
+			}
+			cflg = ft_checkrtr(tetro);
+			if (cflg == 0)
+			{
+				str[0] = ft_newquad(str[0], tetro->d, tetro->d + 1);
 				first = 1;
 			}
 		}
 	}
+	return (str[0]);
 }
 
 
 char	*ft_init(char **str, int count, int diag)
 {
-	struct t_tetro;
+	t_tetro	*tetro;
 	int c;
 
-	t_tetro.d = diag;
-	t_tetro.n = count;
+	tetro = malloc(sizeof(t_tetro));
+	tetro->d = diag;
+	tetro->n = count;
+	tetro->mass = (int *)malloc((sizeof(int)) * (count + 1));
+	tetro->ovl = (int *)malloc((sizeof(int)) * diag * diag);
+	tetro->fld = (int *)malloc((sizeof(int)) * (count + 1));
+	tetro->rtr= (int **)malloc(sizeof(int *) * (diag * diag));
 
-	t_tetro->mass = (int *)malloc((sizeof) * (count + 1));
-	t_tetro->ovl = (int *)malloc((sizeof) * diag * diag);
-	t_tetro->fld = (int *)malloc((sizeof) * (count + 1));
-	b_zeroint(t_tetro->ovl);
-	b_zeroint(t_tetro->fld);
 	c = 0;
-	while (c <= n)
+	while(c < diag * diag)
 	{
-		mass[c] = 1;
+		tetro->rtr[c]=malloc(sizeof(int) * (count + 1));
 		c++;
 	}
-	str[0] = ft_brute2(str, t_tetro);
+	
+	ft_bzeroint(tetro->ovl, diag * diag);
+	ft_bzeroint(tetro->fld, count + 1);
+	c = 0;
+	while (c <= count)
+	{
+		ft_bzeroint(tetro->rtr[c], count + 1);
+		tetro->mass[c] = 1;
+		c++;
+	}
+	str[0] = ft_brute2(str, tetro);
+	return (str[0]);
 }
 
 
@@ -568,30 +653,30 @@ char	*ft_brute(char **str, int n)
 	d = 4;
 	// d = floor(sqrt(n * 4)) + 1;
 	first = 1;
-	while (first != n + 1 && d == 3)
-	{
-		second = 1;
-		while(second != n + 1)
-		{
-			crd = -1;
-			if ((first != second && (str[first] != NULL || str[second] != NULL)) && (d == 3))
-				crd = ft_coordinate(ft_d3(str[first]),str[second], d);
-			else if (first != second && (str[first] != NULL || str[second] != NULL))
-				crd = ft_coordinate(str[first], str[second], d);
-			if (first != second && crd >= 0)
-			{
-				str[0] = ft_paste3(ft_d3(str[first]), str[second], crd, d);
-				str[first] = NULL;
-				str[second] = NULL;
-				str[0] = ft_brute1(str, n, d);
-				return (str[0]);
-			}
-			second++;
-		}
-		first++;
-	}
+	// while (first != n + 1 && d == 3)
+	// {
+	// 	second = 1;
+	// 	while(second != n + 1)
+	// 	{
+	// 		crd = -1;
+	// 		if ((first != second && (str[first] != NULL || str[second] != NULL)) && (d == 3))
+	// 			crd = ft_coordinate(ft_d3(str[first]),str[second], d);
+	// 		else if (first != second && (str[first] != NULL || str[second] != NULL))
+	// 			crd = ft_coordinate(str[first], str[second], d);
+	// 		if (first != second && crd >= 0)
+	// 		{
+	// 			str[0] = ft_paste3(ft_d3(str[first]), str[second], crd, d);
+	// 			str[first] = NULL;
+	// 			str[second] = NULL;
+	// 			str[0] = ft_brute1(str, n, d);
+	// 			return (str[0]);
+	// 		}
+	// 		second++;
+	// 	}
+	// 	first++;
+	// }
 	str[0] = NULL;
-	str[0] = ft_brute1(str, n, d);
+	str[0] = ft_init(str, n, d);
 	return (str[0]);
 }
 

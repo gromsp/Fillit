@@ -1,7 +1,7 @@
 #ifndef FILIT_FILIT_H
 # define FILIT_FILIT_H
-#include "libft/libft.h"
-#include "libft/get_next_line.h"
+// #include "libft/libft.h"
+// #include "libft/get_next_line.h"
 
 #define WIDTH 4
 int check_1(char *tetr, int pos);
@@ -23,6 +23,7 @@ void	ft_fillit(char **str, int n);
 #define UP -4
 typedef struct	s_tetro
 {
+	int **rtr;
 	int ccrd[2];
 	int flag;
 	int *mass;

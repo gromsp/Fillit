@@ -284,6 +284,30 @@ char	*ft_quadforprin(char *str, int d)
 	return (strn);
 }
 
+
+// void	ft_qprint(char *str, int d) // DEBAG EPTA
+// {
+// 	int i;
+// 	int n;
+
+// 	i = 0;
+// 	while(i < d * d)
+// 	{
+// 		if (i % 4 == 0)
+// 			printf("\n");
+// 	    if (str[i] == 0)
+// 	        printf(".");
+// //	    else if (str[i] == 1)
+// //	        str[i] = '#';
+// //	    else if (str[i] != 0 && str[i] != '\n')
+// //	        str[i] = '1';
+// 		else
+// 			printf("%c", str[i]);
+// 		i++;
+// 	}
+// 	printf("\n_________________\n");
+// }
+
 void	ft_qprint(char *str, int d)
 {
 	int i;
@@ -416,12 +440,15 @@ char	*ft_back(char **str, t_tetro *tetro)
 
 	j = 1;
 	i = ft_flag(tetro->ovl, tetro->d);
-	while(i <= tetro->n)
+	while(j <= tetro->n)
 	{
 		if (tetro->fld[j] >= i)
 			str[0] = ft_restore(str, tetro, j);
-		i++;
-		if (tetro->ovl[i] <= tetro->d * tetro->d)
+		j++;
+	}
+	while (i <= tetro->d * tetro->d)
+	{
+			i++;
 			tetro->ovl[i] = 0;
 	}
 	return (str[0]);
@@ -650,7 +677,7 @@ char	*ft_brute(char **str, int n)
 	int second;
 	int crd;
 
-	d = 4;
+	d = 6;
 	// d = floor(sqrt(n * 4)) + 1;
 	first = 1;
 	// while (first != n + 1 && d == 3)

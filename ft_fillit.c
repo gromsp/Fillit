@@ -40,7 +40,7 @@ void	*ft_memalloc(size_t size)
 
     if (size == 0)
         return (NULL);
-    dest = (char *)malloc(size);
+    dest = (char *)malloc(sizeof(char) * size);
     if (dest == NULL)
         return (NULL);
     ft_bzero(dest, size);
@@ -90,7 +90,7 @@ int		ft_fsmb(char *str)
 	return (i);
 }
 
-int		ft_move(char *str1, char *str2, int crd, int d)
+int		ft_move(char *str1, char *str2, int crd, int d)          //19.02 Изменены условия в 
 {
 	char *str;
 	int i;
@@ -106,21 +106,29 @@ int		ft_move(char *str1, char *str2, int crd, int d)
 			return (1);
 		}
     str = ft_strcpy(str, str1, d * d);
-	i = crd / d;
-	while(j < 16)
+	if (crd < 0)
+		return (1);
+	i = crd /  d;
+	while(j < 16)   
 	{
-		g = (j - (4 * j));
-	//	printf (" %d j=%d\n", (j % 4), j);
 		if ((crd + (j % 4)) + d * (j / 4) > d * d && str2[j] == 1)
 			str[0] = 2;
 		if (((crd + (j % 4) + d * (j / 4)) / d) - i != (j /4) && str2[j] == 1)
 			str[0] = 2;
-		if (str2[j] == 1)
+		if (str2[j] == 1 && ((crd + (j % 4)) + d * (j / 4)) < d * d - 1)									 //19.02 Изменены условия в  этом ифе, для того, чтоб не вылетать за память
 			str[(crd + (j % 4)) + d * (j / 4)] = str1[(crd + j % 4) + d * (j / 4)] + str2[j];
-		if (((str[(crd + (j % 4)) + d * (j / 4)] >= 2) && (str2[j] == 1)) || (str[0] == 2))
-			return (1);
+		if (str[0] == 2)
+				return (1);
+		if (((crd + (j % 4)) + d * (j / 4)) < d * d - 1)
+		{
+			if (str[(crd + (j % 4)) + d * (j / 4)] >= 2 && ((str2[j] == 1) || (str[0] == 2)))
+			{
+				return (1);
+			}
+		}
 		j++;
 	}
+	// printf("000\n");
 	return (0);
 }
 
@@ -133,9 +141,12 @@ char	*ft_paste(char *str1, char *str2, int crd, int d)
 
 	i = 0;
 	j = 0;
-	str = ft_strnew(d * d);
+	str = (char *)malloc(sizeof(char) * d * d);
+	ft_bzero(str, d * d);
 	s = ft_fsmb(str2);
 	crd = crd - s;
+	if (crd < 0)						//Добавлено условие в эту функцию .как и в другую похожую. Может быть ошибочно, понадлюдать
+		crd = 0;
 	if (str1 == NULL)
 	{
 	//	str = ft_strcpy(str, str2, d * d);
@@ -153,18 +164,22 @@ char	*ft_paste(char *str1, char *str2, int crd, int d)
 		}
 		return (str);
 	}
-	str = ft_strcpy(str, str1, d * d);
+	str = ft_strcpy(str, str1, d * d - 1);
 	i = crd / d;
 	while(j < 16)
 	{
+		// printf ("index - %d crd - %d j - %d\n", (crd + (j % 4)) + d * (j / 4), crd, j);
 		if ((crd + (j % 4)) + d * (j / 4) > d * d && str2[j] == 1)
 			str[0] = 2;
 		if (((crd + (j % 4) + d * (j / 4)) / d) - i != (j /4) && str2[j] == 1)
 			str[0] = 2;
-		if (str2[j] == 1)
+		if (str2[j] == 1 && (crd + (j % 4)) + d * (j / 4) < d * d)
 			str[(crd + (j % 4)) + d * (j / 4)] = str2[16];
+		if ((crd + (j % 4)) + d * (j / 4) < d * d || str[0] == 2)							//Добавлены условия для незахода за память
+		{
 		if (str[(crd + (j % 4)) + d * (j / 4)] == 2 || str[0] == 2)
 			return (str);
+		}
 		j++;
 	}
 	return (str);
@@ -210,22 +225,24 @@ int		ft_coordinate(char *str1, char *str2, int d)
 	char *tmp;
 	int s;
 
+	// printf ("%d d3\n", d);
 	i = 0;
 	flag = 0;
 	if (str1 == NULL)
-		return (0);
-	if (str1 == NULL)
-		return (0);
+		return (-5);
+	if (str2 == NULL)
+		return (-5);
 	tmp = ft_strnew(d * d);
-    tmp = ft_strcpy(tmp, str1, d * d);
+    tmp = ft_strcpy(tmp, str1, d * d - 1);
 	s = ft_fsmb(str2);
 	while(i != d * d)
 	{
-		if (tmp[i] == 1 || tmp[i] == 2)
+		if (tmp[i] > 0)
 			i++;
 		else
 		{
 			flag = ft_move(tmp, str2, i - s, d);
+			// printf("flag - %d\n", flag);
 //			flag = ft_search(str1, d);
 			if (flag == 0)
 				return(i);
@@ -285,28 +302,28 @@ char	*ft_quadforprin(char *str, int d)
 }
 
 
-// void	ft_qprint(char *str, int d) // DEBAG EPTA
-// {
-// 	int i;
-// 	int n;
+void	ft_qprintdbg(char *str, int d) // DEBAG EPTA
+{
+	int i;
+	int n;
 
-// 	i = 0;
-// 	while(i < d * d)
-// 	{
-// 		if (i % 4 == 0)
-// 			printf("\n");
-// 	    if (str[i] == 0)
-// 	        printf(".");
-// //	    else if (str[i] == 1)
-// //	        str[i] = '#';
-// //	    else if (str[i] != 0 && str[i] != '\n')
-// //	        str[i] = '1';
-// 		else
-// 			printf("%c", str[i]);
-// 		i++;
-// 	}
-// 	printf("\n_________________\n");
-// }
+	i = 0;
+	while(i < d * d)
+	{
+		if (i % d == 0)
+			printf("\n");
+	    if (str[i] == 0)
+	        printf(".");
+//	    else if (str[i] == 1)
+//	        str[i] = '#';
+//	    else if (str[i] != 0 && str[i] != '\n')
+//	        str[i] = '1';
+		else
+			printf("%c", str[i]);
+		i++;
+	}
+	printf("\n_________________\n");
+}
 
 void	ft_qprint(char *str, int d)
 {
@@ -325,6 +342,30 @@ void	ft_qprint(char *str, int d)
 		printf("%c", str[i]);
 		i++;
 	}
+}
+
+void	dbgmassn(int *mass)
+{
+	int i = 0;
+	int n = 8;
+
+	while (i <= n)
+	{
+		printf("%d ", mass[i++]);
+	}
+	printf("\n");
+}
+
+void	dbgmassd(int *mass)
+{
+	int i = 0;
+	int n = 35;
+
+	while (i <= n)
+	{
+		printf("%d ", mass[i++]);
+	}
+	printf("\n");
 }
 
 char	*ft_d3(char *str)
@@ -362,7 +403,7 @@ int		ft_flag(int *ovl, int d)
 		if (ovl[i] != 0)
 			return(i);
 	}
-	return (-1);
+	return (0);
 }
 
 int		ft_checkmass(int *mass, int n)
@@ -404,14 +445,18 @@ char	*ft_subs(char **str, t_tetro *tetro)
 {
 	int second;
 	int crd;
+	int flag;
 
 	second = 1;
 	tetro->ccrd[0] = -1;
+//	flag = ft_flag(tetro->ovl, tetro->d);
 	while (second <= tetro->n)
 	{
+		// printf("1\n");
 		crd = -1;
 		if (tetro->mass[second] != 0)
-			crd = ft_coordinate(str[0], str[second], tetro->d);
+			crd = ft_coordinate(str[0], str[second], tetro->d); // gde to tut
+		// printf("sec - %d, crd - %d\n", second, crd);
 		if (crd >= 0 && (crd < tetro->ccrd[0] || tetro->ccrd[0] < 0))
 		{
 			tetro->ccrd[0] = crd;
@@ -427,6 +472,7 @@ char	*ft_subs(char **str, t_tetro *tetro)
 	if (tetro->ccrd[0] >= 0)
 	{
 		str[0] = ft_paste(str[0], str[tetro->ccrd[1]], tetro->ccrd[0], tetro->d);
+		// printf("0\n");
 		tetro->mass[tetro->ccrd[1]] = 0;
 		tetro->fld[tetro->ccrd[1]] = tetro->ccrd[0];
 	}
@@ -440,16 +486,18 @@ char	*ft_back(char **str, t_tetro *tetro)
 
 	j = 1;
 	i = ft_flag(tetro->ovl, tetro->d);
+	printf("ovl - %d\n", i);
 	while(j <= tetro->n)
 	{
 		if (tetro->fld[j] >= i)
 			str[0] = ft_restore(str, tetro, j);
 		j++;
 	}
-	while (i <= tetro->d * tetro->d)
+	while (i < tetro->d * tetro->d)
 	{
 			i++;
-			tetro->ovl[i] = 0;
+			if (i < tetro->d * tetro->d)		//19.02 Добавлено ограничение для незахода ovl[i] за память
+				tetro->ovl[i] = 0;
 	}
 	return (str[0]);
 }
@@ -469,7 +517,8 @@ char	*ft_fpaste(char **str, t_tetro *tetro)
 			tetro->mass[j] = 0;
 			tetro->fld[j] = i;
 			tetro->rtr[i][j] = 0;
-			tetro->ovl[i]--;
+			if (tetro->ovl[i] > 0)
+				tetro->ovl[i]--;
 			return (str[0]);
 		}
 		j++;
@@ -503,21 +552,37 @@ char	*ft_brute2(char **str, t_tetro *tetro)
 	int crd;
 	int cflg;
 	int flg;
+//	int i = 0;
 
 	first = 1;
 	flg = 0;
+	str[0] = ft_strnew(tetro->d * tetro->d);
 	while (first <= tetro->n)
 	{
+		// printf("ovl0 %c\n", str[0][18]);
 		str[0] = ft_subs(str, tetro);
+		// printf("ovl1 %d\n", tetro->ovl[18]);
+		// ft_qprintdbg(str[0], tetro->d);
+		// dbgmassd(tetro->ovl);
+		// dbgmassn(tetro->fld);
+		//printf("PS - %d\n", str[0][35]);
 		first++;
 		if (first == tetro->n)
 		{
+			// ft_qprintdbg(str[0], tetro->d);
+			// dbgmassd(tetro->ovl);
+			// dbgmassn(tetro->fld);
 			cflg = ft_checkmass(tetro->mass, tetro->n);
 			if (cflg > 0 && ft_checkrtr(tetro) < 0)
 			{
 				str[0] = ft_back(str, tetro);
 				first = 1;
+				ft_qprintdbg(str[0], tetro->d);
+				dbgmassd(tetro->ovl);
 				str[0] = ft_fpaste(str, tetro);
+				printf("Posle\n");
+				ft_qprintdbg(str[0], tetro->d);
+				dbgmassd(tetro->ovl);
 			}
 			else if (cflg <= 0)
 			{

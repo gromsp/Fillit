@@ -422,6 +422,16 @@ int		ft_checkmass(int *mass, int n)
 	return (count);
 }
 
+int		**rtrrestore(int **rtr, int i, int d, int n)
+{
+	while(i < d * d)
+	{
+		ft_bzeroint(rtr[i], n);
+		i++;
+	}
+	return (rtr);
+}
+
 char	*ft_restore(char **str, t_tetro *tetro, int i)
 {
 	int j;
@@ -459,13 +469,15 @@ char	*ft_subs(char **str, t_tetro *tetro)
 		// printf("sec - %d, crd - %d\n", second, crd);
 		if (crd >= 0 && (crd < tetro->ccrd[0] || tetro->ccrd[0] < 0))
 		{
+			printf("crd0 - %d, second0 - %d\n", crd, second);
 			tetro->ccrd[0] = crd;
 			tetro->ccrd[1] = second;
 		}
-		else if (crd == tetro->ccrd[0] && crd >= 0)
+		else if (crd == tetro->ccrd[0] && crd >= 0 && tetro->rtr[crd][second] != 1)
 		{
+			printf("crd - %d, second - %d\n", crd, second);
 			tetro->ovl[crd]++;
-			tetro->rtr[crd][second]++;
+			tetro->rtr[crd][second] = 1;
 		}
 		second++;
 	}
@@ -486,17 +498,20 @@ char	*ft_back(char **str, t_tetro *tetro)
 
 	j = 1;
 	i = ft_flag(tetro->ovl, tetro->d);
-	printf("ovl - %d\n", i);
+	// printf("ovl - %d\n", i);
 	while(j <= tetro->n)
 	{
 		if (tetro->fld[j] >= i)
+		{
 			str[0] = ft_restore(str, tetro, j);
+		}
 		j++;
 	}
+	tetro->rtr = rtrrestore(tetro->rtr, i + 1, tetro->d, tetro->n);
 	while (i < tetro->d * tetro->d)
 	{
 			i++;
-			if (i < tetro->d * tetro->d)		//19.02 Добавлено ограничение для незахода ovl[i] за память
+			if (i < tetro->d * tetro->d)
 				tetro->ovl[i] = 0;
 	}
 	return (str[0]);
@@ -569,6 +584,7 @@ char	*ft_brute2(char **str, t_tetro *tetro)
 		first++;
 		if (first == tetro->n)
 		{
+			//exit(1);
 			// ft_qprintdbg(str[0], tetro->d);
 			// dbgmassd(tetro->ovl);
 			// dbgmassn(tetro->fld);
@@ -577,17 +593,23 @@ char	*ft_brute2(char **str, t_tetro *tetro)
 			{
 				str[0] = ft_back(str, tetro);
 				first = 1;
-				ft_qprintdbg(str[0], tetro->d);
-				dbgmassd(tetro->ovl);
+				// ft_qprintdbg(str[0], tetro->d);
+				// dbgmassd(tetro->ovl);
+				// dbgmassn(tetro->fld);
+				// dbgmassn(tetro->rtr[18]);
 				str[0] = ft_fpaste(str, tetro);
-				printf("Posle\n");
-				ft_qprintdbg(str[0], tetro->d);
-				dbgmassd(tetro->ovl);
+				// printf("Posle\n");
+				// ft_qprintdbg(str[0], tetro->d);
+				// dbgmassd(tetro->ovl);
+				// dbgmassn(tetro->fld);
+				// dbgmassn(tetro->rtr[18]);
 			}
 			else if (cflg <= 0)
 			{
 				str[0] = ft_quadforprin(str[0], tetro->d);
 				ft_qprint(str[0], tetro->d);
+				// ft_qprintdbg(str[0], tetro->d);
+				// dbgmassn(tetro->fld);
 				return (str[0]);
 			}
 			cflg = ft_checkrtr(tetro);

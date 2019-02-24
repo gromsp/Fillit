@@ -116,7 +116,10 @@ int		ft_move(char *str1, char *str2, int crd, int d)
 		if (str[0] == 2 || (((crd + (j % 4)) + d * (j / 4)) < d * d - 1))
 		{
 			if ((str[0] == 2) || (crd < 0) || (str[g] >= 2 && (str2[j] == 1)))
+			{
+				free(str);
 				return (1);
+			}
 		}
 		j++;
 	}
@@ -146,10 +149,14 @@ char	*ft_paste(char *str1, char *str2, int crd, int d)
 		if ((crd + (j % 4)) + d * (j / 4) < d * d || str[0] == 2)
 		{
 			if (str[(crd + (j % 4)) + d * (j / 4)] == 2 || str[0] == 2)
+			{
+				free(str1);
 				return (str);
+			}
 		}
 		j++;
 	}
+	free(str1);
 	return (str);
 }
 
@@ -208,10 +215,14 @@ int		ft_coordinate(char *str1, char *str2, int d)
 		{
 			flag = ft_move(tmp, str2, i - s, d);
 			if (flag == 0)
+			{
+				free(tmp);
 				return (i);
+			}
 			i++;
 		}
 	}
+	free(tmp);
 	return (-5);
 }
 
@@ -253,7 +264,26 @@ void	ft_qprint(char *str, int d)
 	}
 }
 
-char	*ft_quadforprin(char *str, int d)
+void	ft_freetet(t_tetro *tetro)
+{
+	int count;
+	int c;
+
+	count = tetro->d;
+	free(tetro->mass);
+	free(tetro->ovl);
+	free(tetro->fld);
+	c = 0;
+	while (c < count * count)
+	{
+		free(tetro->rtr[c]);
+		c++;
+	}
+	free(tetro->rtr);
+	free(tetro);
+}
+
+char	*ft_quadforprin(char *str, int d, t_tetro *tetro)
 {
 	char *strn;
 	int i;
@@ -276,6 +306,7 @@ char	*ft_quadforprin(char *str, int d)
 		i++;
 	}
 	ft_qprint(strn, d);
+//	ft_freetet(tetro);
 	return (strn);
 }
 
@@ -563,7 +594,7 @@ char	*ft_brute2(char **str, t_tetro *tetro)
 			if (ft_cmass(tetro->mass, tetro->n) > 0 && ft_checkrtr(tetro) < 0)
 				str[0] = ft_bback(str, tetro);
 			else if (ft_cmass(tetro->mass, tetro->n) <= 0)
-				return (ft_quadforprin(str[0], tetro->d));
+				return (ft_quadforprin(str[0], tetro->d, tetro));
 			if (ft_checkrtr(tetro) == 0)
 				str[0] = ft_freetetro(str[0], tetro);
 			first = 1;
@@ -571,7 +602,6 @@ char	*ft_brute2(char **str, t_tetro *tetro)
 	}
 	return (str[0]);
 }
-
 
 char	*ft_init(char **str, int count, int diag)
 {
@@ -598,6 +628,7 @@ char	*ft_init(char **str, int count, int diag)
 		c++;
 	}
 	str[0] = ft_brute2(str, tetro);
+	ft_freetet(tetro);
 	return (str[0]);
 }
 
@@ -613,7 +644,7 @@ char	*ft_brute(char **str, int n)
 	while (first != n + 1 && d == 3)
 	{
 		second = 1;
-		while(second != n + 1)
+		while (second != n + 1)
 		{
 			crd = -1;
 			if ((first != second && (str[first] != NULL || str[second] != NULL)) && (d == 3))

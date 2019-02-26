@@ -9,7 +9,7 @@ char	*ft_newquad(char *str, int d, int nd)
 
 	i = 0;
 	j = 0;
-	strn = ft_strnew(d * d);
+	strn = ft_strnew(nd * nd);
 	while (i < nd * nd)
 	{
 		if (((i + 1) % nd == 0 && i != 0) || (j + 1 > (d * d)))
@@ -34,7 +34,7 @@ void	ft_qprint(char *str, int d)
 	{
 		if (str[i] == 0)
 			str[i] = '.';
-		printf("%c", str[i]);
+		printf("%c", str[i]); //putchar
 		i++;
 	}
 }

@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include "ft_fillit.c"
+#include "ft_fillit.h"
 
 int		main()
 {

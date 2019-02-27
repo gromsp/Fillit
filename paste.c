@@ -7,18 +7,15 @@ char	*ft_paste(char *str1, char *str2, int crd, int d)
 	int j;
 
 	j = 0;
-	str = ft_strnew(d * d);
 	crd = crd - ft_fsmb(str2);
-	str = ft_strcpy(str, str1, d * d - 1);
 	i = crd / d;
 	while (j < 16)
 	{
 		if (str2[j] == 1 && (crd + (j % 4)) + d * (j / 4) < d * d)
-			str[(crd + (j % 4)) + d * (j / 4)] = str2[16];
+			str1[(crd + (j % 4)) + d * (j / 4)] = str2[16];
 		j++;
 	}
-	free(str1);
-	return (str);
+	return (str1);
 }
 
 char	*ft_paste3(char *str1, char *str2, int crd, int d)

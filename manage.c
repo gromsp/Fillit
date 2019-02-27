@@ -51,6 +51,30 @@ void	ft_qprintdbg(char *str, int d)
 	printf("\n_________________\n");
 }
 
+void	dbgmassn(int *mass)
+{
+	int i = 0;
+	int n = 4;
+
+	while (i <= n)
+	{
+		printf("%d ", mass[i++]);
+	}
+	printf("\n");
+}
+
+void	dbgmassd(int *mass, int d)
+{
+	int i = 0;
+	int n = d * d - 1;
+
+	while (i <= n)
+	{
+		printf("%d ", mass[i++]);
+	}
+	printf("\n");
+}
+
 char	*ft_brute2(char **str, t_tetro *tetro)
 {
 	int first;
@@ -59,13 +83,15 @@ char	*ft_brute2(char **str, t_tetro *tetro)
 
 	first = 1;
 	flg = 0;
-	str[0] = ft_strnew(tetro->d * tetro->d);
+	str[0] = ft_strnew(tetro->d * tetro->d - 1);
 	while (first <= tetro->n)
 	{
 		str[0] = ft_subs(str, tetro);
-		first++;
 		ft_qprintdbg(str[0], tetro->d);
-		if (first == tetro->n)
+		dbgmassd(tetro->ovl, tetro->d);
+		dbgmassn(tetro->mass);
+		printf("f - %d\n", first);
+		if (first++ == tetro->n)
 		{
 			if (ft_cmass(tetro->mass, tetro->n) > 0 && ft_checkrtr(tetro) < 0)
 				str[0] = ft_bback(str, tetro);
@@ -88,28 +114,26 @@ char	*ft_brute(char **str, int n)
 
 	d = 4;
 	first = 1;
-	while (first != n + 1 && d == 3)
-	{
-		second = 1;
-		while (second != n + 1)
-		{
-			crd = -1;
-			if ((first != second && (str[first] != NULL || str[second] != NULL)) && (d == 3))
-				crd = ft_coordinate(ft_d3(str[first]), str[second], d);
-			else if (first != second && (str[first] != NULL || str[second] != NULL))
-				crd = ft_coordinate(str[first], str[second], d);
-			if (first != second && crd >= 0)
-			{
-				str[0] = ft_paste3(ft_d3(str[first]), str[second], crd, d);
-				str[first] = NULL;
-				str[second] = NULL;
-				str[0] = ft_init(str, n, d);
-				return (str[0]);
-			}
-			second++;
-		}
-		first++;
-	}
+	// while (first != n + 1 && d == 1)
+	// {
+	// 	second = 1;
+	// 	while (second != n + 1)
+	// 	{
+	// 		crd = -1;
+	// 		if ((first != second && (str[first] != NULL || str[second] != NULL)) && (d == 3))
+	// 			crd = ft_coordinate(ft_d3(str[first]), str[second], d);
+	// 		if (first != second && crd >= 0)
+	// 		{
+	// 			str[0] = ft_paste3(ft_d3(str[first]), str[second], crd, d);
+	// 			str[first] = NULL;
+	// 			str[second] = NULL;
+	// 			str[0] = ft_init(str, n, d);
+	// 			return (str[0]);
+	// 		}
+	// 		second++;
+	// 	}
+	// 	first++;
+	// }
 	str[0] = NULL;
 	str[0] = ft_init(str, n, d);
 	return (str[0]);

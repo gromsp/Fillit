@@ -23,12 +23,12 @@ int		ft_move(char *str1, char *str2, int crd, int d)
 	int g;
 
 	j = 0;
-	str = ft_strnew(d * d);
-	str = ft_strcpy(str, str1, d * d);
+	str = ft_strnew(d * d - 1);
+	str = ft_strcpy(str, str1, d * d - 1);
 	while (j < 16)
 	{
 		g = (crd + (j % 4)) + d * (j / 4);
-		if ((crd + (j % 4)) + d * (j / 4) > d * d && str2[j] == 1)
+		if ((crd + (j % 4)) + d * (j / 4) > d * d - 1 && str2[j] == 1)
 			str[0] = 2;
 		if ((g / d) - (crd / d) != (j / 4) && str2[j] == 1)
 			str[0] = 2;

@@ -34,6 +34,7 @@ char	*ft_subs(char **str, t_tetro *tetro)
 		crd = -1;
 		if (tetro->mass[s] != 0)
 			crd = ft_coordinate(str[0], str[s], tetro->d);
+		// printf("crd - %d || s - %d\n", crd, s);
 		if (crd >= 0 && (crd < tetro->ccrd[0] || tetro->ccrd[0] < 0))
 			ft_writecrd(tetro, crd, s);
 		else if (crd == tetro->ccrd[0] && crd >= 0 && tetro->rtr[crd][s] != 1)

@@ -50,7 +50,7 @@ void	ft_tetroinit(t_tetro *tetro)
 	ft_bzeroint(tetro->ovl, diag * diag);
 	ft_bzeroint(tetro->fld, count + 1);
 	c = 0;
-	while (c <= count)
+	while (c <= count + 1)
 		tetro->mass[c++] = 1;
 }
 
@@ -60,8 +60,9 @@ char	*ft_freetetro(char *str, t_tetro *tetro)
 	int count;
 
 	count = tetro->d;
-	// str = ft_newquad(str, tetro->d, tetro->d + 1);
-	str = ft_strnew(tetro->d * tetro->d);
+	c = tetro->d + 1;
+	free(str);
+	str = ft_strnew(c * c);
 	free(tetro->mass);
 	free(tetro->ovl);
 	free(tetro->fld);
@@ -94,7 +95,7 @@ char	*ft_init(char **str, int count, int diag)
 	ft_bzeroint(tetro->ovl, diag * diag);
 	ft_bzeroint(tetro->fld, count + 1);
 	c = 0;
-	while (c <= count)
+	while (c <= count + 1)
 		tetro->mass[c++] = 1;
 	str[0] = ft_brute2(str, tetro);
 	ft_freetet(tetro);

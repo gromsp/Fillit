@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 13:47:06 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 16:48:07 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/01 17:25:05 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct	s_tetro
 	int n;
 	int d;
 }				t_tetro;
+int		high_sqrt(int n);
 void	ft_bzeroint(int *s, size_t n);
 void	ft_ftbzero(void *s, size_t n);
 void	*ft_ftmemalloc(size_t size);

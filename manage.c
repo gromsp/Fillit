@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:40:36 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 16:49:39 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/01 17:28:56 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_brute(char **str, int n)
 	int d;
 	int ttr[3];
 
-	d = 4;
+	d = high_sqrt(4 * n);
 	ttr[1] = 1;
 	str[0] = ft_ftstrnew(d * d - 1);
 	while (ttr[1]++ != n + 1 && d == 3)

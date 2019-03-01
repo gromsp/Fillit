@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   manage.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/01 13:46:40 by adoyle            #+#    #+#             */
+/*   Updated: 2019/03/01 13:46:40 by adoyle           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_fillit.h"
 
@@ -111,30 +122,30 @@ char	*ft_brute(char **str, int n)
 	int first;
 	int second;
 	int crd;
+	int mass[n + 1];
 
 	d = 4;
 	first = 1;
-	// while (first != n + 1 && d == 1)
-	// {
-	// 	second = 1;
-	// 	while (second != n + 1)
-	// 	{
-	// 		crd = -1;
-	// 		if ((first != second && (str[first] != NULL || str[second] != NULL)) && (d == 3))
-	// 			crd = ft_coordinate(ft_d3(str[first]), str[second], d);
-	// 		if (first != second && crd >= 0)
-	// 		{
-	// 			str[0] = ft_paste3(ft_d3(str[first]), str[second], crd, d);
-	// 			str[first] = NULL;
-	// 			str[second] = NULL;
-	// 			str[0] = ft_init(str, n, d);
-	// 			return (str[0]);
-	// 		}
-	// 		second++;
-	// 	}
-	// 	first++;
-	// }
-	str[0] = NULL;
+	str[0] = ft_strnew(d * d - 1);
+	while (first != n + 1 && d == 3)
+	{
+		second = 1;
+		while (second != n + 1)
+		{
+			crd = -1;
+			if (first != second)
+				crd = ft_coordinate(ft_d3(str[first]), str[second], d);
+			if (first != second && crd >= 0)
+			{
+				str[0] = ft_paste3(ft_d3(str[first]), str[second], crd, d);
+				ft_qprintdbg(str[0], d);
+				return (str[0]);
+			}
+			second++;
+		}
+		first++;
+	}
+	free(str[0]);
 	str[0] = ft_init(str, n, d);
 	return (str[0]);
 }

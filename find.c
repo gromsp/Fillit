@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/01 13:46:56 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 13:46:56 by adoyle           ###   ########.fr       */
+/*   Created: 2019/03/01 16:18:18 by adoyle            #+#    #+#             */
+/*   Updated: 2019/03/01 16:48:57 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_fillit.h"
 
-char	*ft_strcpy(char *dest, char *str, int n)
+char	*ft_ftstrcpy(char *dest, char *str, int n)
 {
 	int i;
 
@@ -27,21 +27,28 @@ char	*ft_strcpy(char *dest, char *str, int n)
 	return (dest);
 }
 
+char	*ft_movenewstr(char *str1, char *str2, int crd, int d)
+{
+	char	*str;
+
+	str = ft_ftstrnew(d * d - 1);
+	str = ft_ftstrcpy(str, str1, d * d - 1);
+	return (str);
+}
+
 int		ft_move(char *str1, char *str2, int crd, int d)
 {
-	char *str;
-	int j;
-	int g;
+	char	*str;
+	int		j;
+	int		g;
 
 	j = 0;
-	str = ft_strnew(d * d - 1);
-	str = ft_strcpy(str, str1, d * d - 1);
-	while (j < 16)
+	str = ft_movenewstr(str1, str2, crd, d);
+	while (j++ < 16)
 	{
 		g = (crd + (j % 4)) + d * (j / 4);
-		if ((crd + (j % 4)) + d * (j / 4) > d * d - 1 && str2[j] == 1)
-			str[0] = 2;
-		if ((g / d) - (crd / d) != (j / 4) && str2[j] == 1)
+		if (((crd + (j % 4)) + d * (j / 4) > d * d - 1 && str2[j] == 1) ||
+			((g / d) - (crd / d) != (j / 4) && str2[j] == 1))
 			str[0] = 2;
 		if (str2[j] == 1 && g < d * d - 1)
 			str[g] = str1[(crd + j % 4) + d * (j / 4)] + str2[j];
@@ -53,7 +60,6 @@ int		ft_move(char *str1, char *str2, int crd, int d)
 				return (1);
 			}
 		}
-		j++;
 	}
 	free(str);
 	return (0);
@@ -74,26 +80,21 @@ int		ft_fsmb(char *str)
 
 int		ft_coordinate(char *str1, char *str2, int d)
 {
-	int i;
-	int flag;
-	char *tmp;
-	int s;
+	int		i;
+	char	*tmp;
 
 	i = 0;
-	flag = 0;
 	if (str1 == NULL || str2 == NULL)
 		return (-5);
-	tmp = ft_strnew(d * d);
-	tmp = ft_strcpy(tmp, str1, d * d - 1);
-	s = ft_fsmb(str2);
+	tmp = ft_ftstrnew(d * d);
+	tmp = ft_ftstrcpy(tmp, str1, d * d - 1);
 	while (i != d * d)
 	{
 		if (tmp[i] > 0)
 			i++;
 		else
 		{
-			flag = ft_move(tmp, str2, i - s, d);
-			if (flag == 0)
+			if (ft_move(tmp, str2, i - ft_fsmb(str2), d) == 0)
 			{
 				free(tmp);
 				return (i);

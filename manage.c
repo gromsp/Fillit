@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/01 13:46:40 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 13:46:40 by adoyle           ###   ########.fr       */
+/*   Created: 2019/03/01 16:40:36 by adoyle            #+#    #+#             */
+/*   Updated: 2019/03/01 16:49:39 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,49 +43,6 @@ char	*ft_bback(char **str, t_tetro *tetro)
 	return (str[0]);
 }
 
-void	ft_qprintdbg(char *str, int d)
-{
-	int i;
-	int n;
-
-	i = 0;
-	while (i < d * d)
-	{
-		if (i % d == 0)
-			printf("\n");
-		if (str[i] == 0)
-			printf(".");
-		else
-			printf("%c", str[i]);
-		i++;
-	}
-	printf("\n_________________\n");
-}
-
-void	dbgmassn(int *mass)
-{
-	int i = 0;
-	int n = 4;
-
-	while (i <= n)
-	{
-		printf("%d ", mass[i++]);
-	}
-	printf("\n");
-}
-
-void	dbgmassd(int *mass, int d)
-{
-	int i = 0;
-	int n = d * d - 1;
-
-	while (i <= n)
-	{
-		printf("%d ", mass[i++]);
-	}
-	printf("\n");
-}
-
 char	*ft_brute2(char **str, t_tetro *tetro)
 {
 	int first;
@@ -94,20 +51,16 @@ char	*ft_brute2(char **str, t_tetro *tetro)
 
 	first = 1;
 	flg = 0;
-	str[0] = ft_strnew(tetro->d * tetro->d - 1);
+	str[0] = ft_ftstrnew(tetro->d * tetro->d - 1);
 	while (first <= tetro->n)
 	{
 		str[0] = ft_subs(str, tetro);
-		ft_qprintdbg(str[0], tetro->d);
-		dbgmassd(tetro->ovl, tetro->d);
-		dbgmassn(tetro->mass);
-		printf("f - %d\n", first);
 		if (first++ == tetro->n)
 		{
 			if (ft_cmass(tetro->mass, tetro->n) > 0 && ft_checkrtr(tetro) < 0)
 				str[0] = ft_bback(str, tetro);
 			else if (ft_cmass(tetro->mass, tetro->n) <= 0)
-				return (ft_quadforprin(str[0], tetro->d, tetro));
+				return (ft_quadforprin(str[0], tetro->d));
 			if (ft_checkrtr(tetro) == 0)
 				str[0] = ft_freetetro(str[0], tetro);
 			first = 1;
@@ -119,31 +72,26 @@ char	*ft_brute2(char **str, t_tetro *tetro)
 char	*ft_brute(char **str, int n)
 {
 	int d;
-	int first;
-	int second;
-	int crd;
-	int mass[n + 1];
+	int ttr[3];
 
 	d = 4;
-	first = 1;
-	str[0] = ft_strnew(d * d - 1);
-	while (first != n + 1 && d == 3)
+	ttr[1] = 1;
+	str[0] = ft_ftstrnew(d * d - 1);
+	while (ttr[1]++ != n + 1 && d == 3)
 	{
-		second = 1;
-		while (second != n + 1)
+		ttr[2] = 1;
+		while (ttr[2]++ != n + 1)
 		{
-			crd = -1;
-			if (first != second)
-				crd = ft_coordinate(ft_d3(str[first]), str[second], d);
-			if (first != second && crd >= 0)
+			ttr[0] = -1;
+			if (ttr[1] != ttr[2])
+				ttr[0] = ft_coordinate(ft_d3(str[ttr[1]]), str[ttr[2]], d);
+			if (ttr[1] != ttr[2] && ttr[0] >= 0)
 			{
-				str[0] = ft_paste3(ft_d3(str[first]), str[second], crd, d);
-				ft_qprintdbg(str[0], d);
+				str[0] = ft_paste3(ft_d3(str[ttr[1]]), str[ttr[2]], ttr[0], d);
+				ft_quadforprin(str[0], d);
 				return (str[0]);
 			}
-			second++;
 		}
-		first++;
 	}
 	free(str[0]);
 	str[0] = ft_init(str, n, d);
@@ -153,5 +101,4 @@ char	*ft_brute(char **str, int n)
 void	ft_fillit(char **str, int n)
 {
 	str[0] = ft_brute(str, n);
-	// ft_qprint(str[0]);	
 }

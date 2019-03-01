@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   restore.c                                          :+:      :+:    :+:   */
+/*   restore1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/01 13:47:43 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 13:47:43 by adoyle           ###   ########.fr       */
+/*   Created: 2019/03/01 16:43:19 by adoyle            #+#    #+#             */
+/*   Updated: 2019/03/01 16:43:28 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int		**rtrrestore(int **rtr, int i, int d, int n)
 
 char	*ft_restore(char **str, t_tetro *tetro, int i)
 {
-	int j;
-	int tet;
-	char c;
+	int		j;
+	int		tet;
+	char	c;
 
 	c = str[i][16];
 	j = 0;

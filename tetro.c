@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/01 13:47:58 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 13:47:58 by adoyle           ###   ########.fr       */
+/*   Created: 2019/03/01 16:47:02 by adoyle            #+#    #+#             */
+/*   Updated: 2019/03/01 16:51:22 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*ft_freetetro(char *str, t_tetro *tetro)
 	count = tetro->d;
 	c = tetro->d + 1;
 	free(str);
-	str = ft_strnew(c * c);
+	str = ft_ftstrnew(c * c);
 	free(tetro->mass);
 	free(tetro->ovl);
 	free(tetro->fld);
@@ -88,7 +88,7 @@ char	*ft_freetetro(char *str, t_tetro *tetro)
 char	*ft_init(char **str, int count, int diag)
 {
 	t_tetro	*tetro;
-	int c;
+	int		c;
 
 	tetro = malloc(sizeof(t_tetro));
 	tetro->d = diag;

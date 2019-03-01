@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/01 13:47:36 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 13:47:36 by adoyle           ###   ########.fr       */
+/*   Created: 2019/03/01 16:42:28 by adoyle            #+#    #+#             */
+/*   Updated: 2019/03/01 16:50:50 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 char	*ft_newquad(char *str, int d, int nd)
 {
-	char *strn;
-	int i;
-	int j;
+	char	*strn;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
-	strn = ft_strnew(nd * nd);
+	strn = ft_ftstrnew(nd * nd);
 	while (i < nd * nd)
 	{
 		if (((i + 1) % nd == 0 && i != 0) || (j + 1 > (d * d)))
@@ -45,19 +45,19 @@ void	ft_qprint(char *str, int d)
 	{
 		if (str[i] == 0)
 			str[i] = '.';
-		printf("%c", str[i]); //putchar
+		write(1, &str[i], 1);
 		i++;
 	}
 }
 
-char	*ft_quadforprin(char *str, int d, t_tetro *tetro)
+char	*ft_quadforprin(char *str, int d)
 {
-	char *strn;
-	int i;
-	int j;
-	int r;
+	char	*strn;
+	int		i;
+	int		j;
+	int		r;
 
-	strn = ft_strnew(d * d + d);
+	strn = ft_ftstrnew(d * d + d);
 	i = 0;
 	j = 0;
 	while (i <= d * d + d)
@@ -80,13 +80,13 @@ char	*ft_quadforprin(char *str, int d, t_tetro *tetro)
 
 char	*ft_d3(char *str)
 {
-	int i;
-	int j;
-	char *tmp;
+	int		i;
+	int		j;
+	char	*tmp;
 
 	i = 0;
 	j = 0;
-	tmp = ft_strnew(10);
+	tmp = ft_ftstrnew(10);
 	while (i < 9)
 	{
 		if ((j % 4) == 3 && j != 0)

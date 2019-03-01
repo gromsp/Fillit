@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 13:47:06 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 13:47:09 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/01 16:48:07 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <unistd.h>
 
 typedef struct	s_tetro
 {
@@ -30,16 +31,17 @@ typedef struct	s_tetro
 	int d;
 }				t_tetro;
 void	ft_bzeroint(int *s, size_t n);
-void	ft_bzero(void *s, size_t n);
-void	*ft_memalloc(size_t size);
-char	*ft_strnew(size_t size);
-char	*ft_strcpy(char *dest, char *str, int n);
+void	ft_ftbzero(void *s, size_t n);
+void	*ft_ftmemalloc(size_t size);
+char	*ft_ftstrnew(size_t size);
+char	*ft_ftstrcpy(char *dest, char *str, int n);
 int		ft_fsmb(char *str);
+char	*ft_movenewstr(char *str1, char *str2, int crd, int d);
 int		ft_move(char *str1, char *str2, int crd, int d);
 char	*ft_paste(char *str1, char *str2, int crd, int d);
 char	*ft_paste3(char *str1, char *str2, int crd, int d);
 int		ft_coordinate(char *str1, char *str2, int d);
-char	*ft_quadforprin(char *str, int d, t_tetro *tetro);
+char	*ft_quadforprin(char *str, int d);
 char	*ft_newquad(char *str, int d, int nd);
 void	ft_freetet(t_tetro *tetro);
 void	ft_qprint(char *str, int d);

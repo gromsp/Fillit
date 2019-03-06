@@ -49,6 +49,9 @@ char	*ft_paste3(char *str1, char *str2, int crd, int d)
 	i = crd / d;
 	j = 0;
 	while (j < 16)
+	{
 		str[(crd + (j % 4)) + d * (j / 4)] = str2[16];
+		j++;
+	}
 	return (str);
 }

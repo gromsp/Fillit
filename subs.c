@@ -32,6 +32,29 @@ char	*ft_write(char **str, t_tetro *tetro)
 	return (str[0]);
 }
 
+char	*ft_stupsubs(char **str, t_tetro *tetro)
+{
+	int s;
+	int crd;
+	char 	*tmp;
+
+	s = 1;
+	tmp = ft_ftstrnew(tetro->d * tetro->d - 1);
+	tetro->ccrd[0] = -1;
+	while (s <= tetro->n)
+	{
+		crd = -1;
+		crd = ft_coordinate(tmp, str[s], tetro->d);
+		if (crd >= 0)
+			tmp = ft_paste(tmp, str[s], crd, tetro->d);
+		else
+			return (str[0]);		
+		s++;
+	}
+	tetro->flag = 1;
+	return (tmp);
+}
+
 char	*ft_subs(char **str, t_tetro *tetro)
 {
 	int s;

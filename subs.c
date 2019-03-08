@@ -32,7 +32,7 @@ char	*ft_write(char **str, t_tetro *tetro)
 	return (str[0]);
 }
 
-char	*ft_stupsubs(char **str, t_tetro *tetro)
+char	*ft_stupsubs(char **str, t_tetro *tetro, int f)
 {
 	int s;
 	int crd;
@@ -40,15 +40,23 @@ char	*ft_stupsubs(char **str, t_tetro *tetro)
 
 	s = 1;
 	tmp = ft_ftstrnew(tetro->d * tetro->d - 1);
+	tmp = ft_ftstrcpy(tmp, str[0], tetro->d * tetro->d - 1);
 	tetro->ccrd[0] = -1;
 	while (s <= tetro->n)
 	{
 		crd = -1;
-		crd = ft_coordinate(tmp, str[s], tetro->d);
+		if (tetro->mass[s] != 0)
+			crd = ft_coordinate(tmp, str[s], tetro->d);
 		if (crd >= 0)
+		{
 			tmp = ft_paste(tmp, str[s], crd, tetro->d);
-		else
-			return (str[0]);		
+			tetro->mass[s] = 0;
+		}
+		else if (s != f)
+		{
+			printf("11111111111111111\n");
+			return (str[0]);
+		}		
 		s++;
 	}
 	tetro->flag = 1;

@@ -93,7 +93,7 @@ char	*ft_init(char **str, int count, int diag)
 	tetro = malloc(sizeof(t_tetro));
 	tetro->d = diag;
 	tetro->n = count;
-	tetro->mass = (int *)malloc((sizeof(int)) * (count + 1));
+	tetro->mass = (int *)malloc((sizeof(int)) * (count + 2));
 	tetro->ovl = (int *)malloc((sizeof(int)) * diag * diag);
 	tetro->fld = (int *)malloc((sizeof(int)) * (count + 1));
 	tetro->rtr = (int **)malloc(sizeof(int *) * (diag * diag));
@@ -107,8 +107,11 @@ char	*ft_init(char **str, int count, int diag)
 	ft_bzeroint(tetro->fld, count + 1);
 	c = 0;
 	while (c <= count + 1)
-		tetro->mass[c++] = 1;
-	str[0] = ft_brute2(str, tetro);
+	{
+		tetro->mass[c] = 1;
+		c++;
+	}
+	str[0] = solve(str, tetro);
 	ft_freetet(tetro);
 	return (str[0]);
 }

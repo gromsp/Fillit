@@ -44,7 +44,7 @@ int		ft_move(char *str1, char *str2, int crd, int d)
 
 	j = 0;
 	str = ft_movenewstr(str1, str2, crd, d);
-	while (j++ < 16)
+	while (j < 16)
 	{
 		g = (crd + (j % 4)) + d * (j / 4);
 		if (((crd + (j % 4)) + d * (j / 4) > d * d - 1 && str2[j] == 1) ||
@@ -60,6 +60,7 @@ int		ft_move(char *str1, char *str2, int crd, int d)
 				return (1);
 			}
 		}
+		j++;
 	}
 	free(str);
 	return (0);
@@ -71,7 +72,7 @@ int		ft_fsmb(char *str)
 
 	i = 0;
 
-	while (str[i] != 1)
+	while (str[i] != 1 && i < 15)
 	{
 		i++;
 	}

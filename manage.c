@@ -116,7 +116,8 @@ int		ft_fmass(int *mass, int n)
 
 char	*ft_nextpast(char **str, t_tetro *tetro, int i, int crd)
 {
-	crd = crd + 1;
+	// crd = crd + 1;
+	tetro->ovl[0] == 0;
 	while (crd < tetro->d * tetro->d)
 	{
 		if (ft_move(str[0], str[i], crd - ft_fsmb(str[i]), tetro->d) == 0)
@@ -149,24 +150,29 @@ char	*reverse(char **str, t_tetro *tetro, int i, int icrd)
 	int f;
 
 	f = i;
+	tetro->ovl[0] = 0;
 	while (i <= tetro->n)
 	{
-		tetro->ovl[i] = 0;
 		icrd = tetro->fld[i];
 		str[0] = ft_frestore(str, tetro, f);
+		if (tetro->ovl[0] == 1)
+			icrd = icrd + 1;
 		str[0] = ft_nextpast(str, tetro, i, icrd);
 		// printf("123\n");
-		// ft_qprintdbg(str[0], tetro->d);
+		ft_qprintdbg(str[0], tetro->d);
 		n = i;
 		while(n <= tetro->n)
 		{
 			str[0] = ft_stupsubs(str, tetro, tetro->n);
 			if (ft_cmass(tetro->mass, tetro->n) == 0)
-				return (ft_quadforprin(str[0], tetro->d));
+				return (str[0]);
 			n++;
 		}
 		if (tetro->ovl[i] == 1)
+		{
+			tetro->ovl[i] = 0;
 			i++;
+		}
 	}
 	return (str[0]);
 }
@@ -181,7 +187,8 @@ char	*ft_brutes(char **str, t_tetro *tetro, int n)
 	if (tetro->flag == 0)
 	{
 		if (ft_cmass(tetro->mass, tetro->n) == 0)
-			return (ft_quadforprin(str[0], tetro->d));
+			return (str[0]);
+			// return (ft_quadforprin(str[0], tetro->d));
 		else
 		{
 			i = ft_fmass(tetro->mass, tetro->n);
@@ -212,6 +219,8 @@ char	*solve(char **str, t_tetro *tetro)
 		if (ft_cmass(tetro->mass, tetro->n) == 0)
 			return (ft_quadforprin(str[0], tetro->d));
 		str[0] = ft_brutes(str, tetro, tetro->n);
+		printf("123\n");
+		// ft_qprintdbg(str[0], tetro->d);
 		n++;
 	}
 	return(str[0]);

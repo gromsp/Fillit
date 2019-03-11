@@ -30,6 +30,7 @@ typedef struct	s_tetro
 	int n;
 	int d;
 }				t_tetro;
+void	ft_qprintdbg(char *str, int d);
 int		high_sqrt(int n);
 void	ft_bzeroint(int *s, size_t n);
 void	ft_ftbzero(void *s, size_t n);

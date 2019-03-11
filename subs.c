@@ -20,17 +20,25 @@ void	ft_writecrd(t_tetro *tetro, int crd, int second)
 
 void	ft_writerpt(t_tetro *tetro, int crd, int second)
 {
-	tetro->ovl[crd]++;
+	// tetro->ovl[crd]++;
 	tetro->rtr[crd][second] = 1;
 }
 
-char	*ft_write(char **str, t_tetro *tetro)
+char	*ft_write1(char **str, t_tetro *tetro, int s, int crd)
 {
-	str[0] = ft_paste(str[0], str[tetro->ccrd[1]], tetro->ccrd[0], tetro->d);
-	tetro->mass[tetro->ccrd[1]] = 0;
-	tetro->fld[tetro->ccrd[1]] = tetro->ccrd[0];
+	str[0] = ft_paste(str[0], str[s], crd, tetro->d);
+	tetro->mass[s] = 0;
+	tetro->fld[s] = crd;
 	return (str[0]);
 }
+
+// char	*ft_write(char **str, t_tetro *tetro)
+// {
+// 	str[0] = ft_paste(str[0], str[tetro->ccrd[1]], tetro->ccrd[0], tetro->d);
+// 	tetro->mass[tetro->ccrd[1]] = 0;
+// 	tetro->fld[tetro->ccrd[1]] = tetro->ccrd[0];
+// 	return (str[0]);
+// }
 
 char	*ft_stupsubs(char **str, t_tetro *tetro, int f)
 {
@@ -51,15 +59,17 @@ char	*ft_stupsubs(char **str, t_tetro *tetro, int f)
 		{
 			tmp = ft_paste(tmp, str[s], crd, tetro->d);
 			tetro->mass[s] = 0;
+			tetro->flag = 1;
+			// ft_qprintdbg(tmp, tetro->d);
 		}
-		else if (s != f)
-		{
-			printf("11111111111111111\n");
-			return (str[0]);
-		}		
+		// else if (ft_cmass(tetro->mass, tetro->n) > 0 && s >= tetro->n)
+		// {
+		// 	// printf("11111111111111111\n");
+		// 	// ft_qprintdbg(tmp, tetro->d);
+		// 	return (str[0]);
+		// }		
 		s++;
 	}
-	tetro->flag = 1;
 	return (tmp);
 }
 
@@ -76,13 +86,43 @@ char	*ft_subs(char **str, t_tetro *tetro)
 		crd = -1;
 		if (tetro->mass[s] != 0)
 			crd = ft_coordinate(str[0], str[s], tetro->d);
-		if (crd >= 0 && (crd < tetro->ccrd[0] || tetro->ccrd[0] < 0))
-			ft_writecrd(tetro, crd, s);
-		else if (crd == tetro->ccrd[0] && crd >= 0 && tetro->rtr[crd][s] != 1)
-			ft_writerpt(tetro, crd, s);
+		// if (crd >= 0 && (crd < tetro->ccrd[0] || tetro->ccrd[0] < 0))
+		// 	ft_writecrd(tetro, crd, s);
+		// else if (crd == tetro->ccrd[0] && crd >= 0 && tetro->rtr[crd][s] != 1)
+		// 	ft_writerpt(tetro, crd, s);
 		s++;
 	}
-	if (tetro->ccrd[0] >= 0)
-		str[0] = ft_write(str, tetro);
+	if (crd >= 0)
+	{
+		str[0] = ft_write1(str, tetro, s, crd);
+		tetro->flag = 1;
+	}
 	return (str[0]);
 }
+
+// char	*ft_subs(char **str, t_tetro *tetro)
+// {
+// 	int s;
+// 	int crd;
+// 	int flag;
+
+// 	s = 1;
+// 	tetro->ccrd[0] = -1;
+// 	while (s <= tetro->n)
+// 	{
+// 		crd = -1;
+// 		if (tetro->mass[s] != 0)
+// 			crd = ft_coordinate(str[0], str[s], tetro->d);
+// 		// if (crd >= 0 && (crd < tetro->ccrd[0] || tetro->ccrd[0] < 0))
+// 		// 	ft_writecrd(tetro, crd, s);
+// 		// else if (crd == tetro->ccrd[0] && crd >= 0 && tetro->rtr[crd][s] != 1)
+// 		// 	ft_writerpt(tetro, crd, s);
+// 		s++;
+// 	}
+// 	if (tetro->ccrd[0] >= 0)
+// 	{
+// 		str[0] = ft_write(str, tetro);
+// 		tetro->flag = 1;
+// 	}
+// 	return (str[0]);
+// }

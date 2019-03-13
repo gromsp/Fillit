@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:47:02 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 16:51:22 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/13 15:36:47 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,12 @@ char	*ft_init(char **str, int count, int diag)
 		tetro->mass[c] = 1;
 		c++;
 	}
-	str[0] = solve(str, tetro);
+//	str[0] = solve(str, tetro);
+	tetro->flag = 0;
+	str[0] = ft_ftstrnew(tetro->d * tetro->d - 1);
+	recurse(str, tetro, 1, 0);
+	if (tetro->flag == 0)
+		str[0] = ft_init(str, count, diag + 1);
 	ft_freetet(tetro);
 	return (str[0]);
 }

@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:36:47 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 16:52:46 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/13 15:42:10 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	*ft_ftmemalloc(size_t size)
 {
 	void	*dest;
 
+	dest = NULL;
 	if (size == 0)
 		return (NULL);
 	dest = (char *)malloc(sizeof(char) * size);

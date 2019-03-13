@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 13:47:06 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 17:25:05 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/13 15:24:32 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ typedef struct	s_tetro
 	int **rtr;
 	int ccrd[2];
 	int flag;
+	int flg;
 	int *mass;
 	int *ovl;
 	int *fld;
 	int n;
 	int d;
 }				t_tetro;
+void	ft_qprintdbg(char *str, int d);
 int		high_sqrt(int n);
 void	ft_bzeroint(int *s, size_t n);
 void	ft_ftbzero(void *s, size_t n);
@@ -64,6 +66,8 @@ char	*ft_freetetro(char *str, t_tetro *tetro);
 char	*ft_bback(char **str, t_tetro *tetro);
 char	*solve(char **str, t_tetro *tetro);
 char	*ft_brute2(char **str, t_tetro *tetro);
+void	recurse(char **str, t_tetro *tetro, int i, int crd);
+void	flt(char **str, t_tetro *tetro);
 char	*ft_init(char **str, int count, int diag);
 char	*ft_brute(char **str, int n);
 void	ft_fillit(char **str, int n);

@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:18:18 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 16:48:57 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/13 14:58:53 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int		massdb(char *s)
 		printf("%d - %d\n", i, s[i]);
 		i++;
 	}
+	return (i);
 }
 
 int		ft_checkd3(char *s, char *a)

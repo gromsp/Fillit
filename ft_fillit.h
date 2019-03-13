@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 13:47:06 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/13 15:24:32 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/13 17:00:35 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	*ft_ftmemalloc(size_t size);
 char	*ft_ftstrnew(size_t size);
 char	*ft_ftstrcpy(char *dest, char *str, int n);
 int		ft_fsmb(char *str);
-char	*ft_movenewstr(char *str1, char *str2, int crd, int d);
+char	*ft_movenewstr(char *str1, int d);
 int		ft_checkd3(char *s, char *a);
 int		ft_move(char *str1, char *str2, int crd, int d);
 char	*ft_paste(char *str1, char *str2, int crd, int d);

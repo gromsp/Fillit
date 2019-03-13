@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:42:28 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 16:50:50 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/13 17:01:26 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ char	*ft_newquad(char *str, int d, int nd)
 void	ft_qprint(char *str, int d)
 {
 	int i;
-	int n;
 
 	i = 0;
 	while (i < d * d + d)

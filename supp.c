@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:46:17 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/01 18:06:01 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/13 17:07:56 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,19 @@ int		ft_flag(int *ovl, int d)
 			return (i);
 	}
 	return (0);
+}
+
+int		ft_fsmb(char *str)
+{
+	int i;
+
+	i = 0;
+
+	while (str[i] != 1 && i < 15)
+	{
+		i++;
+	}
+	return (i);
 }
 
 int		ft_cmass(int *mass, int n)

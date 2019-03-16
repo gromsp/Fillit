@@ -8,7 +8,7 @@ all: $(NAME)
 	
 $(NAME): $(OBJ)
 	make -C ./libft
-	@gcc $(OBJ) $(LIB) -g  -o $(NAME)
+	@gcc $(OBJ) $(LIB) -o $(NAME)
 
 $(OBJ): $(FILES)
 	@gcc $(CFLAGS)  $(FILES) 

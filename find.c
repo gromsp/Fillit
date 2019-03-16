@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:18:18 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/13 18:14:01 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/16 15:44:51 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		ft_move(char *str1, char *str2, int crd, int d)
 			str[0] = 2;
 		if (str2[j] == 1 && g < d * d - 1 && str1[0] != 2)
 			str[g] = str1[(crd + j % 4) + d * (j / 4)] + str2[j];
-		if (str[0] == 2 || (crd < 0) || (str[g] >= 2 && (str2[j] == 1)))
+		if (str[0] == 2 || crd < 0 || (str2[j] == 1 && str[g] >= 2))
 		{
 			free(str);
 			return (1);

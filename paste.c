@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:41:34 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/13 17:09:19 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/29 20:36:05 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,11 @@ char	*ft_paste3(char *str1, char *str2, int crd, int d)
 	}
 	i = crd / d;
 	j = 0;
+	crd = crd - ft_fsmb(str2);
 	while (j < 16)
 	{
-		str[(crd + (j % 4)) + d * (j / 4)] = str2[16];
+		if (str2[j] == 1)
+			str[(crd + (j % 4)) + d * (j / 4)] = str2[16];
 		j++;
 	}
 	return (str);

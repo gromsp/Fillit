@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:18:18 by adoyle            #+#    #+#             */
-/*   Updated: 2019/03/16 15:44:51 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/03/29 20:47:40 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int		ft_coordinate(char *str1, char *str2, int d)
 	i = 0;
 	if (str1 == NULL || str2 == NULL)
 		return (-5);
-	tmp = ft_movenewstr(str1, d);
+	tmp = ft_movenewstr(str1, 4);
 	if (d == 3 && ft_checkd3(str1, str2) == 1)
 		return (-5);
 	tmp = ft_d3(tmp);
